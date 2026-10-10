@@ -33,4 +33,17 @@ public class Piece {
         this.coordinateX = -1;
         this.coordinateY = -1;
     }
+
+    public Player getPlayer() {
+        return this.playerPiece;
+    }
+
+    public String getSymbol() {
+        return this.moveType;
+    }
+
+    public boolean isValidMove(int targetX, int targetY, Board board) {
+        return true;
+    }
 }
+// @matheushuang: não mexi aqui

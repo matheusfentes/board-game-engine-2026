@@ -1,14 +1,14 @@
 public class Board {
-    // board do jogo: 10 linhas por 9 colunas
+    // Matriz do tabuleiro: 10 linhas (Y) por 9 colunas (X)
     private Piece[][] board = new Piece[10][9];
     private Player player1;
     private Player player2;
 
-/**
- * 
- * @param player1 Define o primeiro jogador
- * @param player2
- */
+    /**
+     * 
+     * @param player1
+     * @param player2
+     */
 
     public Board(Player player1, Player player2) {
         this.player1 = player1;
@@ -16,73 +16,109 @@ public class Board {
         initializeBoard();
     }
 
-    // Coloca todas as peças no lugar pra começar a partida
+    // Posiciona as pecas dos dois lados pra começar a partida
     private void initializeBoard() {
-        // Lado de cima (Preto)
+        // Lado de cima (Black)
         setSide(player2, 0, 2, 3);
 
-        // Lado de baixo (Vermelho)
+        // Lado de baixo (Red)
         setSide(player1, 9, 7, 6);
     }
 
-    // Cria e arruma as peças de um dos lados do board
+    // Instancia as pecas de um dos lados do tabuleiro
     private void setSide(Player player, int mainLine, int cannonLine, int pawnLine) {
-        // Ordem das peças na primeira linha
-        String[] pieceName = {
-            "Tower", "Horse", "Elephant", "Guard", "General",
-            "Guard", "Elephant", "Horse", "Tower"
-        };
+        // Linha principal do fundo
+        this.board[mainLine][0] = new Tower(player, 0, mainLine);
+        this.board[mainLine][1] = new Horse(player, 1, mainLine);
+        this.board[mainLine][2] = new Elephant(player, 2, mainLine);
+        this.board[mainLine][3] = new Guard(player, 3, mainLine);
+        this.board[mainLine][4] = new General(player, 4, mainLine);
+        this.board[mainLine][5] = new Guard(player, 5, mainLine);
+        this.board[mainLine][6] = new Elephant(player, 6, mainLine);
+        this.board[mainLine][7] = new Horse(player, 7, mainLine);
+        this.board[mainLine][8] = new Tower(player, 8, mainLine);
 
-        // Instancia a fileira do fundo
-        for (int x = 0; x < 9; x++) {
-            makePositionPiece(pieceName[x], player, x, mainLine);
-        }
+        // Canhoes
+        this.board[cannonLine][1] = new Cannon(player, 1, cannonLine);
+        this.board[cannonLine][7] = new Cannon(player, 7, cannonLine);
 
-        // Os dois canhões
-        makePositionPiece("Cannon", player, 1, cannonLine);
-        makePositionPiece("Cannon", player, 7, cannonLine);
-
-        // Os 5 peões intercalados
+        // Peões
         for (int x = 0; x < 9; x += 2) {
-            makePositionPiece("Pawn", player, x, pawnLine);
+            this.board[pawnLine][x] = new Pawn(player, x, pawnLine);
         }
     }
 
-    // Checa onde a peça tá começa, cria as rules e põe no board
-    private void makePositionPiece(String type, Player player, int x, int y) {
-        // Checa se tá na região do rio (linhas 4 e 5)
-        boolean inRiver = (y == 4 || y == 5);
-
-        // Checa se tá na área do palácio
-        boolean inPalace = (x >= 3 && x <= 5) && (y <= 2 || y >= 7);
-
-        RuleSet rules = new RuleSet(false, inRiver, inPalace);
-        Piece piece = new Piece(type, rules, player, x, y);
-
-        this.board[y][x] = piece;
+    public boolean isInsideBoard(int x, int y) {
+        return x >= 0 && x < 9 && y >= 0 && y < 10;
     }
 
-    // Passa a peça de uma coordenada pra outra
-    public void movePiece(int originX, int originY, int destinationX, int destinationY) {
-        Piece piece = board[originY][originX];
-
-        // Se não tem peça na casinha onde apertou, não faz nada
-        if (piece == null) return;
-
-        // Se já tinha peça no destination, come
-        Piece pieceDestination = board[destinationY][destinationX];
-        if (pieceDestination != null) {
-            pieceDestination.capturedPiece();
+    public boolean movePiece(int originX, int originY, int destinationX, int destinationY) {
+        // 1. Limites do tabuleiro
+        if (!isInsideBoard(originX, originY) || !isInsideBoard(destinationX, destinationY)) {
+            return false;
         }
 
-        // Atualiza a posição da peça e limpa a casa antiga
+        // Nao permite mover para a mesma casa
+        if (originX == destinationX && originY == destinationY) {
+            return false;
+        }
+
+        Piece piece = this.board[originY][originX];
+        if (piece == null) {
+            return false;
+        }
+
+        Piece destinationPiece = this.board[destinationY][destinationX];
+
+        // Não deixa comer própria peça
+        if (destinationPiece != null && destinationPiece.getPlayer().getColor().equalsIgnoreCase(piece.getPlayer().getColor())) {
+            return false;
+        }
+
+        // Validacao das regras de cada peça. ex.: cavalo nao pode pular as peças
+        if (!piece.isValidMove(destinationX, destinationY, this)) {
+            return false;
+        }
+
+        // Se tiver peça onde a peça ta indo pode comer
+        if (destinationPiece != null) {
+            destinationPiece.capturedPiece();
+        }
+
+        // Atualiza a matriz e a posicao interna da peca
         piece.moveTo(destinationX, destinationY);
-        board[destinationY][destinationX] = piece;
-        board[originY][originX] = null;
+        this.board[destinationY][destinationX] = piece;
+        this.board[originY][originX] = null;
+
+        return true;
     }
 
-    // Pega a peça em uma posição específica
-    public Piece getpiece(int x, int y) {
-        return board[y][x];
+    public Piece getPiece(int x, int y) {
+        if (!isInsideBoard(x, y)) {
+            return null;
+        }
+        return this.board[y][x];
+    }
+
+    //O tabuleiro no terminal usando os simbolos das pecas (quando tu adicionar vai puxar em getSymbol @luis).
+    public void printBoard() {
+        System.out.println("  0  1  2  3  4  5  6  7  8 (X)"); //imprime eixo X
+        for (int y = 0; y < 10; y++) {
+            System.out.print(y + " "); //imprime eixo Y
+            for (int x = 0; x < 9; x++) {
+                Piece p = this.board[y][x];
+                if (p == null) {
+                    System.out.print(".  "); //imprime casa vazia
+                } else {
+                    System.out.print(p.getSymbol() + " "); //imprime cada peca
+                }
+            }
+            System.out.println();
+            if (y == 4) {
+                System.out.println("  -------------------------"); //imprime o rio
+            }
+        }
     }
 }
+
+// @matheushuang: fiz a matriz posição para add as novas subclasses para as peças e adicionei o printBoard() para mostrar o tabuleiro no terminal.

@@ -1,56 +1,99 @@
 public class GameManagement {
-    private int time;
+    private long startTimeMillis;
     private Player currentTurn;
     private Board gameBoard;
     private Player[] gamePlayers;
 
     /**
-     * Cria uma instancia do game management pra fazer o intermedio entre o jogador e os objetos do jogo
      * 
-     * @param board     Define o tabuleiro que sera usado durante o jogo
-     * @param players   Define os jogadores que irao participar do jogo
+     * @param board
+     * @param players
      */
-    public GameManagement(Board board, Player[] players){
-        this.time = 0;
+
+    //Cria a instancia de GameManagement que une player e board (escolhe quem começa também)
+    public GameManagement(Board board, Player[] players) {
+        this.startTimeMillis = System.currentTimeMillis();
         this.gameBoard = board;
         this.gamePlayers = players;
-        
-        for(Player player : this.gamePlayers){
-            if(player.getColor().equalsIgnoreCase("Vermelho")){
-                this.currentTurn = player;
-                break;
-            }
-        } 
-    }
 
-    public boolean executeMove(int x, int y){
-        // logica de execucao de movimento @Matheus
-        return true;
-    }
-
-    public void switchTurn(){
-        for(Player player : this.gamePlayers){
-            if(player.getPlayerCode() != this.currentTurn.getPlayerCode()){
+        // "Red" (Vermelho) sempre começa no xiangqi
+        for (Player player : this.gamePlayers) {
+            if (player.getColor().equalsIgnoreCase("Red")) {
                 this.currentTurn = player;
                 break;
             }
         }
     }
 
-
-        
-    public int getTime(){
-        return time;
+    public boolean isGameOver() {
+    // Pra dar o checkmate (um dos generais é capturado)
+    int generalCount = 0;
+    for (int y = 0; y < 10; y++) {
+        for (int x = 0; x < 9; x++) {
+            Piece p = gameBoard.getPiece(x, y);
+            if (p != null && p.getClass().getSimpleName().equalsIgnoreCase("General")) {
+                generalCount++;
+            }
+        }
     }
-// falta finalizar a logica de tempo @Matheus
-    public void setTime(){
+    return generalCount < 2;
+}
 
+    public boolean executeMove(int originX, int originY, int destX, int destY) {
+        Piece piece = this.gameBoard.getPiece(originX, originY);
+
+        // Verifica se existe peca onde ta "apertando/clicando"
+        if (piece == null) {
+            return false;
+        }
+
+        // Confere sea peca pertence ao jogador
+        if (!piece.getPlayer().getColor().equalsIgnoreCase(this.currentTurn.getColor())) {
+            return false;
+        }
+
+        // Tenta executar o movimento
+        boolean moveSuccess = this.gameBoard.movePiece(originX, originY, destX, destY);
+
+        // termina a vez caso depois da jogada
+        if (moveSuccess) {
+            switchTurn();
+            return true;
+        }
+
+        return false;
     }
-// falta finalizar a logica de tempo @Matheus
-    public Player getTurn(){
+
+    public void switchTurn() {
+        for (Player player : this.gamePlayers) {
+            if (player.getPlayerCode() != this.currentTurn.getPlayerCode()) {
+                this.currentTurn = player;
+                break;
+            }
+        }
+    }
+
+    //Retorna os segundos
+    public int getTime() {
+        long elapsedMillis = System.currentTimeMillis() - this.startTimeMillis;
+        return (int) (elapsedMillis / 1000);
+    }
+
+    public void resetTime() {
+        this.startTimeMillis = System.currentTimeMillis();
+    }
+
+    public Player getTurn() {
         return this.currentTurn;
     }
-    public Player endgame(){
+
+    public Board getGameBoard() {
+        return this.gameBoard;
+    }
+
+    public Player endgame() {
         return this.currentTurn;
     }
 }
+
+// @matheushuang: Foi adicionado a contagem de tempo com System.currentTimeMillis, a lógica de validação de jogada e troca de turno, e a condição de término de partida (isGameOver) quando um dos Generais for de arrasta.
