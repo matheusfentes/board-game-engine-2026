@@ -1,17 +1,22 @@
 public class Player {
-    private String nome;
-    private String cor; // Vermelho ou Preto
+    private int playerCode;
+    private String color; // Vermelho ou Preto
 
-    public Player(String nome, String cor) {
-        this.nome = nome;
-        this.cor = cor;
+    /**
+     * 
+     * @param playerCode Define o código referente a cada jogador
+     * @param color Define a cor de cada jogador
+     */
+    public Player(int playerCode, String color) {
+        this.color = color;
+        this.playerCode = playerCode;
     }
 
-    public String getNome() {
-        return nome;
+    public String getColor() {
+        return color;
     }
-
-    public String getCor() {
-        return cor;
+    
+    public int getPlayerCode() {
+        return playerCode;
     }
 }

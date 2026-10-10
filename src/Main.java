@@ -2,12 +2,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Player jogador1 = new Player("Jogador 1", "Vermelho");
+        Player player1 = new Player("player 1", "Red");
 
-        Player jogador2 = new Player("Jogador 2", "Preto");
+        Player player2 = new Player("player 2", "Black");
 
-        Board board = new Board(jogador1, jogador2);
+        Board board = new Board(player1, player2);
 
-        System.out.println("Partida iniciada!");
+        System.out.println("Match has begun!");
+
+        RuleSet rule = new RuleSet();
     }
 }
+

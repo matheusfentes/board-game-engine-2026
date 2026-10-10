@@ -16,7 +16,7 @@ public class GameManagement {
         this.gamePlayers = players;
         
         for(Player player : this.gamePlayers){
-            if(player.getColor().equalsIgnoreCase("vermelho")){
+            if(player.getColor().equalsIgnoreCase("Vermelho")){
                 this.currentTurn = player;
                 break;
             }
@@ -24,7 +24,7 @@ public class GameManagement {
     }
 
     public boolean executeMove(int x, int y){
-        // logica de execucao de movimento
+        // logica de execucao de movimento @Matheus
         return true;
     }
 
@@ -37,14 +37,19 @@ public class GameManagement {
         }
     }
 
+
+        
     public int getTime(){
         return time;
     }
+// falta finalizar a logica de tempo @Matheus
+    public void setTime(){
 
+    }
+// falta finalizar a logica de tempo @Matheus
     public Player getTurn(){
         return this.currentTurn;
     }
-
     public Player endgame(){
         return this.currentTurn;
     }
