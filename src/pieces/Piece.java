@@ -1,31 +1,35 @@
+package pieces;
+import table.*;
+
 public class Piece {
-    private String moveType;
-    private RuleSet restriction;
-    private Player playerPiece; 
-    private int coordinateX;
-    private int coordinateY;
+    protected String pieceName;
+    protected RuleSet restriction;
+    protected Player playerPiece; 
+    protected int coordinateX;
+    protected int coordinateY;
 
     /**
      * Cria uma nova instancia pra definir o estado inicial da peca
      * 
-     * @param moveType      Define o tipo de movimento da peca
+     * @param pieceName     Define o nome da peca
      * @param rules         Define o ruleset aplicado pra essa peca
      * @param playerPiece   Define a que jogador a peca pertence
      * @param coordinateX   Define a coordenada x inicial da peca 
      * @param coordinateY   Define a coordenada y inicial da peca
      */
-    public Piece(String moveType, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY){
-        this.moveType = moveType;
+    public Piece(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY){
+        this.pieceName = pieceName;
         this.restriction = rules;
         this.playerPiece = playerPiece;
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }
 
-    public void moveTo(int x, int y){
+    public boolean moveTo(int x, int y, Board gameBoard){
         // codigos de restricao de movimento
         this.coordinateX = x;
         this.coordinateY = y;
+        return true;
     }
 
     public void capturedPiece(){
@@ -34,16 +38,7 @@ public class Piece {
         this.coordinateY = -1;
     }
 
-    public Player getPlayer() {
-        return this.playerPiece;
-    }
-
-    public String getSymbol() {
-        return this.moveType;
-    }
-
-    public boolean isValidMove(int targetX, int targetY, Board board) {
-        return true;
-    }
+    // getters da classe Piece
+    public Player getPlayer() { return this.playerPiece; }
+    public String getSymbol() { return this.pieceName; }
 }
-// @matheushuang: não mexi aqui

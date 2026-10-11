@@ -1,12 +1,17 @@
+package table;
+import pieces.Piece;
+
 public class RuleSet {
     private boolean isCheck;
     
-    //Construtor inicial
     public RuleSet() {
         this.isCheck = false;
     }
 
-    //Construtor que define o xeque. isCheck Define se algum Generaleral esta em xeque
+    /**
+     * Construtor que define o xeque.
+     * @param isCheck   Define se algum General esta em xeque.
+     */
     public RuleSet(boolean isCheck) {
         this.isCheck = isCheck;
     }
@@ -37,7 +42,7 @@ public class RuleSet {
         }
     }
 
-    //Regra que conta pecas no caminho em linha reta. Ex.: Utilizada pela Torre (0 pecas) e pelo Cnhão (0 para mover, 1 para capturar).
+    //Regra que conta pecas no caminho em linha reta. Ex.: Utilizada pela Torre (0 pecas) e pelo Canhao (0 para mover, 1 para capturar).
     public static int countObstacles(int originX, int originY, int destX, int destY, Board board) {
         int count = 0;
         int stepX = Integer.compare(destX, originX);
@@ -84,14 +89,11 @@ public class RuleSet {
         return false;
     }
 
+    // getter e setter do check (nao sei como isso vai continuar)
     public boolean getIsCheck() {
         return this.isCheck;
     }
-
     public void setCheck(boolean isCheck) {
         this.isCheck = isCheck;
     }
 }
-
-// @matheushuang: Adicionei as regras gerais e restrições de posição: limite do Palácio, do Rio, contagem de peças na frente em linha reta torre e do canhão e validação da regra do General Voador.
-//ps. @matheushuang: @luisteixeira me diz como vai ser a regra do cavalo, se eu add aqui ou se coloca na subclasse do cavalo. Eu acho que é melhor colocar na subclasse do cavalo, mas me fala ai.
