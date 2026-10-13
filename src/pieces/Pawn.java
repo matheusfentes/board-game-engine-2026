@@ -13,12 +13,14 @@ public class Pawn extends Piece {
     public boolean moveTo(int x, int y, Board gameBoard) {
         // recebe a regra e cor do peao pra saber a validade e direcao da sua jogada
         String color = this.playerPiece.getColor();
-        boolean crossedRiver = RuleSet.hasCrossedRiver(y, color);
+        boolean crossedRiver = RuleSet.hasCrossedRiver(this.coordinateX, color);
 
         // operador ternario pra verificar qual a direcao da peca
-        boolean forward = color.equalsIgnoreCase("Red") ?
-        (x == this.coordinateX && y == this.coordinateY - 1) : (x == this.coordinateX && y == this.coordinateY + 1);
-        boolean sides = (y==this.coordinateY && (x == this.coordinateX+1 || x == this.coordinateX-1)); 
+        boolean forward = (color.equalsIgnoreCase("Red") || color.equalsIgnoreCase("Vermelho")) ?
+            (y == this.coordinateY && x == this.coordinateX - 1) : 
+            (y == this.coordinateY && x == this.coordinateX + 1);
+            
+        boolean sides = (x == this.coordinateX && (y == this.coordinateY + 1 || y == this.coordinateY - 1)); 
         
         // verifica se os operadores ternarios indicam a validade da jogada e se ele ja cruzou o rio
         if (forward || (crossedRiver && sides)){

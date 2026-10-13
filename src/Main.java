@@ -16,29 +16,35 @@ public class Main {
         GameManagement gameManager = new GameManagement(gameBoard, new Player[]{gameBoard.getPlayer1(), gameBoard.getPlayer2()});
 
         // loop de jogadas
-        while(!gameManager.isGameOver()){
-            // tempo restante para jogar do jogador atual
-            System.out.println("\nTempo: " + gameManager.getTime() + " segundos");
+        while (!gameManager.isGameOver()) {
+            Player jogadorAtual = gameManager.getTurn();
+
+            // indicacao do turno do jogador e tempo restante para jogar do jogador atual
+            System.out.println("\n========================================");
+            System.out.println(" TURNO: " + jogadorAtual.getPlayerName() + " (" + jogadorAtual.getColor() + ")");
+            System.out.println(" TEMPO RESTANTE: " + gameManager.getTime() + " segundos");
+            System.out.println("========================================");
+
             gameBoard.printBoard();
             
             // escolha da peca
-            System.out.println("\nEscolha a linha da peca: ");
+            System.out.println("\nEscolha a COLUNA (Y) da peça de origem: ");
             int originY = scanner.nextInt();
-            System.out.println("Escolha a coluna da peca: ");
+            System.out.println("Escolha a LINHA (X) da peça de origem: ");
             int originX = scanner.nextInt();
 
             // escolha do local destino da peca
-            System.out.println("Escolha a posicao da linha do destino: ");
+            System.out.println("Escolha a COLUNA (Y) de destino: ");
             int destinationY = scanner.nextInt();
-            System.out.println("Escolha a posicao da coluna do destino: ");
+            System.out.println("Escolha a LINHA (X) de destino: ");
             int destinationX = scanner.nextInt();
 
             // verificacao de execucao de movimento
-            if(!gameManager.executeMove(originX, originY, destinationX, destinationY)){
-                System.out.println("\n");
-            }
+            gameManager.executeMove(originX, originY, destinationX, destinationY);
         }
         // fechamento do scanner
         scanner.close();
     }
 }
+
+//@matheushuang: mexi no tempo

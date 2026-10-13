@@ -9,36 +9,39 @@ public class RuleSet {
     }
 
     /**
-     * Construtor que define o xeque.
-     * @param isCheck   Define se algum General esta em xeque.
+- Construtor que define o xeque.
+- 
+@param isCheck   Define se algum General esta em xeque.
      */
     public RuleSet(boolean isCheck) {
         this.isCheck = isCheck;
     }
 
+    
+
     //Verifica se a coordenada pertence ao Palacio (zona "morta" do rei) do jogador.
     public static boolean isInPalace(int x, int y, String playerColor) {
-        if (x < 3 || x > 5) {
+        if (y < 3 || y > 5) {
             return false;
         }
         if (playerColor.equalsIgnoreCase("Black")) {
-            return y >= 0 && y <= 2;
+            return x >= 0 && x <= 2;
         } else {
-            return y >= 7 && y <= 9;
+            return x >= 7 && x <= 9;
         }
     }
 
     //Verifica se a coordenada ta na regiao do Rio (linha 4 e 5).
-    public static boolean isInRiver(int y) {
-        return y == 4 || y == 5;
+    public static boolean isInRiver(int x) {
+        return x == 4 || x == 5;
     }
 
     //Verifica se o peao ja atravessou o Rio pra deixar movimento lateral.
-    public static boolean hasCrossedRiver(int y, String playerColor) {
+    public static boolean hasCrossedRiver(int x, String playerColor) {
         if (playerColor.equalsIgnoreCase("Red")) {
-            return y <= 4;
+            return x <= 4;
         } else {
-            return y >= 5;
+            return x >= 5;
         }
     }
 
@@ -67,8 +70,8 @@ public class RuleSet {
         int redGeneralX = -1, redGeneralY = -1;
         int blackGeneralX = -1, blackGeneralY = -1;
 
-        for (int y = 0; y < 10; y++) {
-            for (int x = 3; x <= 5; x++) {
+        for (int x = 0; x < 10; x++) {
+            for (int y = 3; y <= 5; y++) {
                 Piece piece = board.getPiece(x, y);
                 if (piece != null && piece.getClass().getSimpleName().equalsIgnoreCase("General")) {
                     if (piece.getPlayer().getColor().equalsIgnoreCase("Red")) {
@@ -82,8 +85,54 @@ public class RuleSet {
             }
         }
 
-        if (redGeneralX != -1 && redGeneralX == blackGeneralX) {
-            return countObstacles(redGeneralX, blackGeneralY, redGeneralX, redGeneralY, board) == 0;
+        if (redGeneralY != -1 && redGeneralY == blackGeneralY) {
+            return countObstacles(blackGeneralX, redGeneralY, redGeneralX, redGeneralY, board) == 0;
+        }
+
+        return false;
+    }
+//@luis mudei a logica do cheque
+    /// Verifica se o General da cor indicada está sob ameaça de alguma peça inimiga
+    public static boolean isPlayerInCheck(String playerColor, Board board) {
+        int generalX = -1;
+        int generalY = -1;
+
+        // 1. Localiza a posição do General do jogador no tabuleiro
+        for (int x = 0; x < 10; x++) {
+            for (int y = 3; y <= 5; y++) {
+                Piece piece = board.getPiece(x, y);
+                if (piece != null && piece.getClass().getSimpleName().equalsIgnoreCase("General")) {
+                    if (piece.getPlayer().getColor().equalsIgnoreCase(playerColor)) {
+                        generalX = x;
+                        generalY = y;
+                        break;
+                    }
+                }
+            }
+            if (generalX != -1) break;
+        }
+
+        // Se o General não for encontrado, não tem xeque
+        if (generalX == -1) {
+            return false;
+        }
+
+        // Itera sobre todas as peças do adversário e testa se alguma consegue mover até ao General
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 9; y++) {
+                Piece enemyPiece = board.getPiece(x, y);
+                if (enemyPiece != null && !enemyPiece.getPlayer().getColor().equalsIgnoreCase(playerColor)) {
+                    int origX = enemyPiece.getCoordinateX();
+                    int origY = enemyPiece.getCoordinateY();
+
+                    // Testa a validade do movimento
+                    if (enemyPiece.moveTo(generalX, generalY, board)) {
+                        // Restaura imediatamente a posição interna da peça de teste
+                        enemyPiece.moveTo(origX, origY, board);
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;
