@@ -44,6 +44,11 @@ public class Piece {
         this.coordinateY = -1;
     }
 
+    public void setCoordinates(int x, int y) {
+        this.coordinateX = x;
+        this.coordinateY = y;
+    }
+
     // Getters
     public int getCoordinateX() { 
         return this.coordinateX; 
@@ -56,14 +61,10 @@ public class Piece {
     public Player getPlayer() { 
         return this.playerPiece; 
     }
-    // Valida se o movimento é legal sem alterar coordenadas
-    public boolean canMove(int x, int y, Board gameBoard) {
-        return false;
-    }
+
     public String getSymbol() { 
         if (this.playerPiece != null && 
-           (this.playerPiece.getColor().equalsIgnoreCase("Red") || 
-            this.playerPiece.getColor().equalsIgnoreCase("Vermelho"))) {
+           (this.playerPiece.getColor().equalsIgnoreCase("Red"))) {
             return ANSI_RED + this.pieceName + ANSI_RESET;
         } else {
             return ANSI_BEIGE + this.pieceName + ANSI_RESET;

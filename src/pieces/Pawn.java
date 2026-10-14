@@ -16,7 +16,7 @@ public class Pawn extends Piece {
         boolean crossedRiver = RuleSet.hasCrossedRiver(this.coordinateX, color);
 
         // operador ternario pra verificar qual a direcao da peca
-        boolean forward = (color.equalsIgnoreCase("Red") || color.equalsIgnoreCase("Vermelho")) ?
+        boolean forward = (color.equalsIgnoreCase("Red")) ?
             (y == this.coordinateY && x == this.coordinateX - 1) : 
             (y == this.coordinateY && x == this.coordinateX + 1);
             

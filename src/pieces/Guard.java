@@ -25,7 +25,7 @@ public class Guard extends Piece {
         }
 
         String color = this.playerPiece.getColor();
-        boolean isRed = color.equalsIgnoreCase("Red") || color.equalsIgnoreCase("Vermelho");
+        boolean isRed = color.equalsIgnoreCase("Red");
 
         // Linha X restrita ao Palácio
         if (isRed) {

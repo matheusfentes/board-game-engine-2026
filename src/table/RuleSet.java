@@ -9,9 +9,8 @@ public class RuleSet {
     }
 
     /**
-- Construtor que define o xeque.
-- 
-@param isCheck   Define se algum General esta em xeque.
+     * Construtor que define o xeque.
+     * @param isCheck Define se algum General esta em xeque.
      */
     public RuleSet(boolean isCheck) {
         this.isCheck = isCheck;
@@ -91,13 +90,13 @@ public class RuleSet {
 
         return false;
     }
-//@luis mudei a logica do cheque
-    /// Verifica se o General da cor indicada está sob ameaça de alguma peça inimiga
+
+    // Verifica se o General da cor indicada está sob ameaça de alguma peça inimiga
     public static boolean isPlayerInCheck(String playerColor, Board board) {
         int generalX = -1;
         int generalY = -1;
 
-        // 1. Localiza a posição do General do jogador no tabuleiro
+        // Localiza a posição do General do jogador no tabuleiro
         for (int x = 0; x < 10; x++) {
             for (int y = 3; y <= 5; y++) {
                 Piece piece = board.getPiece(x, y);
@@ -125,10 +124,10 @@ public class RuleSet {
                     int origX = enemyPiece.getCoordinateX();
                     int origY = enemyPiece.getCoordinateY();
 
-                    // Testa a validade do movimento
-                    if (enemyPiece.moveTo(generalX, generalY, board)) {
-                        // Restaura imediatamente a posição interna da peça de teste
-                        enemyPiece.moveTo(origX, origY, board);
+                    // Testa o ataque e restaura as coordenadas
+                    boolean attacksGeneral = enemyPiece.moveTo(generalX, generalY, board);
+                    enemyPiece.setCoordinates(origX, origY);
+                    if (attacksGeneral) {
                         return true;
                     }
                 }
@@ -136,6 +135,16 @@ public class RuleSet {
         }
 
         return false;
+    }
+
+    // Recebe o metodo de verificacao de movimentos do board
+    public static boolean hasAnyLegalMove(String playerColor, Board board) {
+        return board.hasAnyLegalMove(playerColor);
+    }
+
+    // Metodo que verifica se houve o xeque-mate
+    public static boolean isCheckmate(String playerColor, Board board) {
+        return isPlayerInCheck(playerColor, board) && !hasAnyLegalMove(playerColor, board);
     }
 
     // getter e setter do check (nao sei como isso vai continuar)

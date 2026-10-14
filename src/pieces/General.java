@@ -26,7 +26,7 @@ public class General extends Piece {
         }
 
         String color = this.playerPiece.getColor();
-        boolean isRed = color.equalsIgnoreCase("Red") || color.equalsIgnoreCase("Vermelho");
+        boolean isRed = color.equalsIgnoreCase("Red") ;
 
         if (isRed) {
             if (x < 7 || x > 9) return false;

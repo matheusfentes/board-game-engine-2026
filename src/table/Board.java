@@ -70,13 +70,11 @@ public class Board {
 
     // Funcao que faz verificacoes de acordo com o tabuleiro para mover a peca
     public boolean movePiece(int originX, int originY, int destinationX, int destinationY) {
-        // Limites do tabuleiro
         if (!isInsideBoard(originX, originY) || !isInsideBoard(destinationX, destinationY)) {
             System.out.println("Fora dos limites do tabuleiro...");
             return false;
         }
 
-        // Nao permite mover para a mesma casa
         if (originX == destinationX && originY == destinationY) {
             System.out.println("Voce escolheu a mesma casa!");
             return false;
@@ -87,49 +85,94 @@ public class Board {
             return false;
         }
 
-        // Não deixa comer a própria peça
         Piece destinationPiece = this.board[destinationX][destinationY];
         if (destinationPiece != null && destinationPiece.getPlayer().getColor().equalsIgnoreCase(piece.getPlayer().getColor())) {
             System.out.println("Nao pode comer a propria peca!");
             return false;
         }
 
-        // Tenta mover a peca de acordo com a regra geometrica dela
-        if (piece.moveTo(destinationX, destinationY, this)) {
-            // Simula o movimento no tabuleiro para validar se infringe as regras de Xeque e Flying General
-            this.board[destinationX][destinationY] = piece;
-            this.board[originX][originY] = null;
+        if (!isLegalMove(originX, originY, destinationX, destinationY)) {
+            return false;
+        }
 
-            boolean inCheck = RuleSet.isPlayerInCheck(piece.getPlayer().getColor(), this);
-            boolean flyingGeneral = RuleSet.areGeneralsFacingEachOther(this);
+        this.board[destinationX][destinationY] = piece;
+        this.board[originX][originY] = null;
+        piece.setCoordinates(destinationX, destinationY);
+        if (destinationPiece != null) {
+            destinationPiece.capturedPiece();
+        }
+        return true;
+    }
 
-            if (inCheck || flyingGeneral) {
-                // Reverte o tabuleiro e a peca caso o movimento resulte em auto-xeque ou enfrente o outro General
-                this.board[originX][originY] = piece;
-                this.board[destinationX][destinationY] = destinationPiece;
-                piece.moveTo(originX, originY, this);
+    public boolean isLegalMove(int originX, int originY, int destinationX, int destinationY) {
+        if (!isInsideBoard(originX, originY) || !isInsideBoard(destinationX, destinationY)
+                || (originX == destinationX && originY == destinationY)) {
+            // Verificações de tabuleiro
+            return false;
+        }
+        Piece piece = this.board[originX][originY];
+        Piece destinationPiece = this.board[destinationX][destinationY];
+        if (piece == null || destinationPiece instanceof General) {
+            // o destino nao pode ser o general e a peca nao pode ser vazia
+            return false;
+        }
 
-                if (flyingGeneral) {
-                    System.out.println("Movimento invalido: Generais nao podem se encarar diretamente (Flying General)!");
-                } else {
-                    System.out.println("Movimento invalido: o seu General ficaria sob Xeque!");
-                }
-                return false;
-            }
+        if (destinationPiece != null
+                && destinationPiece.getPlayer().getColor().equalsIgnoreCase(piece.getPlayer().getColor())) {
+            // verifica se ta capturando uma peca da mesma cor
+            return false;
+        }
 
-            // Se tiver peça onde a peça está indo, pode comer
-            if (destinationPiece != null) {
-                destinationPiece.capturedPiece();
-            }
+        int originalX = piece.getCoordinateX();
+        int originalY = piece.getCoordinateY();
+        if (!piece.moveTo(destinationX, destinationY, this)) {
+            piece.setCoordinates(originalX, originalY);
+            return false;
+        }
 
+        // tabuleiro temporario pra ver se o general foi ameacado
+        this.board[destinationX][destinationY] = piece;
+        this.board[originX][originY] = null;
+        boolean inCheck = RuleSet.isPlayerInCheck(piece.getPlayer().getColor(), this);
+        boolean generalsFacing = RuleSet.areGeneralsFacingEachOther(this);
+
+        // restauracao do tabuleiro para a setagem de cordenadas
+        this.board[originX][originY] = piece;
+        this.board[destinationX][destinationY] = destinationPiece;
+        piece.setCoordinates(originalX, originalY);
+
+        if (inCheck || generalsFacing) {
+            return false;
+        } else {
             return true;
+        }
+    }
+
+    // Verifica o tabuleiro duas vezes, verifica para se existe peca ali, e verifica para se existe um destino legal pra peca
+    public boolean hasAnyLegalMove(String playerColor) {
+        for (int originX = 0; originX < 10; originX++) {
+            for (int originY = 0; originY < 9; originY++) {
+                Piece piece = this.board[originX][originY];
+                if (piece == null || !piece.getPlayer().getColor().equalsIgnoreCase(playerColor)) {
+                    // Pula se nao tiver a peca naquela posicao do tabuleiro ou for uma peca diferente
+                    continue;
+                }
+
+                for (int destinationX = 0; destinationX < 10; destinationX++) {
+                    for (int destinationY = 0; destinationY < 9; destinationY++) {
+                        if (isLegalMove(originX, originY, destinationX, destinationY)) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
         return false;
     }
 
     // O tabuleiro no terminal: cabeçalho mostra Colunas (Y), lateral mostra Linhas (X)
     public void printBoard() {
-        System.out.println("\n(Y) 0  1  2  3  4  5  6  7  8"); // imprime eixo Y (colunas)
+        System.out.println("\n    0  1  2  3  4  5  6  7  8 (Y)"); // imprime eixo Y (colunas)
         for (int x = 0; x < 10; x++) {
             System.out.print(x + "   "); // imprime eixo X (linhas)
             for (int y = 0; y < 9; y++) {
@@ -145,27 +188,24 @@ public class Board {
                 System.out.println("    -------------------------"); // imprime o rio entre linhas 4 e 5
             }
         }
+        System.out.println("(X)");
     }
 
-    public void printBoard(Player currentTurn) {
-        System.out.println("\n(Y) 0  1  2  3  4  5  6  7  8   [Vez de: " + currentTurn.getPlayerName() + " - " + currentTurn.getColor() + "]");
+    public boolean hasOnlyDefensivePiecesRemaining() {
         for (int x = 0; x < 10; x++) {
-            System.out.print(x + "   ");
             for (int y = 0; y < 9; y++) {
-                Piece p = this.board[x][y];
-                if (p == null) {
-                    System.out.print(".  ");
-                } else {
-                    System.out.print(p.getSymbol() + " ");
+                Piece piece = this.board[x][y];
+                if (piece != null
+                        && !(piece instanceof General)
+                        && !(piece instanceof Guard)
+                        && !(piece instanceof Elephant)) {
+                    return false;
                 }
             }
-            System.out.println();
-            if (x == 4) {
-                System.out.println("    -------------------------");
-            }
         }
+        return true;
     }
-    
+
     // Getters dos atributos e getPiece da posicao escolhida (linha x, coluna y)
     public Piece getPiece(int x, int y) {
         if (!isInsideBoard(x, y)) {

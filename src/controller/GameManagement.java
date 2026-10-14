@@ -2,7 +2,9 @@ package controller;
 
 import java.util.Scanner;
 import pieces.Piece;
-import table.*;
+import table.RuleSet;
+import table.Board;
+import table.Player;
 
 public class GameManagement {
     private long startTimeMillis;
@@ -12,11 +14,9 @@ public class GameManagement {
     private int[] playerRemainingSeconds;
 
     /**
-- Cria a instancia de GameManagement que une os jogadores e o tabuleiro
-- 
-- 
-@param board    Tabuleiro da partida
-@param players  Array com os jogadores participantes
+     * Cria a instancia de GameManagement que une os jogadores e o tabuleiro
+     * @param board     Tabuleiro da partida
+     * @param players   Array com os jogadores participantes
      */
     public GameManagement(Board board, Player[] players) {
         this.startTimeMillis = System.currentTimeMillis();
@@ -26,7 +26,7 @@ public class GameManagement {
 
         // "Red" (Vermelho) sempre começa no Xiangqi
         for (Player player : this.gamePlayers) {
-            if (player.getColor().equalsIgnoreCase("Red") || player.getColor().equalsIgnoreCase("Vermelho")) {
+            if (player.getColor().equalsIgnoreCase("Red")) {
                 this.currentTurn = player;
                 break;
             }
@@ -55,6 +55,7 @@ public class GameManagement {
         return gameBoard;
     }
 
+    // Metodo que recebe o index do jogador atual, usado nas funcoes de gerenciamento de tempo do jogo
     private int getCurrentTurnIndex() {
         for (int i = 0; i < this.gamePlayers.length; i++) {
             if (this.gamePlayers[i].getPlayerCode() == this.currentTurn.getPlayerCode()) {
@@ -64,28 +65,36 @@ public class GameManagement {
         return 0;
     }
 
-    // Verifica se o jogo acabou por tempo ou ausência de Generais
+    // Verifica se o jogo acabou por tempo, xeque-mate ou falta de movimentos legais
     public boolean isGameOver() {
+        // Se o tempo terminar, game over 
         if (this.getTime() <= 0) {
             System.out.println("\n[Fim de Jogo] O tempo acabou!");
             System.out.println(this.currentTurn.getPlayerName() + " perdeu a partida!");
             return true;
         }
 
-        int generalCount = 0;
-        // x = Linhas (0 a 9) e y = Colunas (0 a 8)
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 9; y++) {
-                Piece p = gameBoard.getPiece(x, y);
-                if (p != null && p.getClass().getSimpleName().equalsIgnoreCase("General")) {
-                    generalCount++;
-                }
-            }
+        // Verifica se existem apenas pecas defensivas no jogo
+        if (this.gameBoard.hasOnlyDefensivePiecesRemaining()) {
+            System.out.println("\n[Fim de Jogo] Empate: restam apenas pecas defensivas, isuficientes pra um xeque-mate!");
+            return true;
         }
 
-        if (generalCount < 2) {
-            System.out.println("\n[Fim de Jogo] O General foi capturado!");
-            System.out.println(currentTurn.getPlayerName() + " venceu a partida!");
+        // Verifica se existe movimentos legais de pecas (ex. general em xeque, voce deve salva-lo)
+        if (!RuleSet.hasAnyLegalMove(this.currentTurn.getColor(), this.gameBoard)) {
+            boolean checkmate = RuleSet.isCheckmate(this.currentTurn.getColor(), this.gameBoard);
+            if (checkmate) {
+                System.out.println("\n[Fim de Jogo] Xeque-mate!");
+            } else {
+                System.out.println("\n[Fim de Jogo] O jogador nao tem movimentos legais!");
+            }
+            System.out.println(this.currentTurn.getPlayerName() + " perdeu a partida!");
+            for (Player player : this.gamePlayers) {
+                if (player.getPlayerCode() != this.currentTurn.getPlayerCode()) {
+                    System.out.println(player.getPlayerName() + " venceu a partida!");
+                    break;
+                }
+            }
             return true;
         }
 
@@ -94,6 +103,7 @@ public class GameManagement {
 
     // Executa a validação do turno e delega a jogada para o tabuleiro
     public boolean executeMove(int originX, int originY, int destX, int destY) {
+        // Gerenciamento do tempo por index do jogador, retirando o tempo restante
         int idx = getCurrentTurnIndex();
         long elapsedSeconds = (System.currentTimeMillis() - this.startTimeMillis) / 1000;
         this.playerRemainingSeconds[idx] -= (int) elapsedSeconds;
@@ -123,7 +133,6 @@ public class GameManagement {
 
         if (moveSuccess) {
             this.switchTurn();
-            this.resetTime();
             return true;
         } else {
             System.out.println("\n[!] Movimento inválido para a peça " + piece.getSymbol() + " de (" + originX + ", " + originY + ") para (" + destX + ", " + destY + "). Verifique as regras de movimentação!");
@@ -147,10 +156,6 @@ public class GameManagement {
         long elapsedSeconds = (System.currentTimeMillis() - this.startTimeMillis) / 1000;
         int remaining = this.playerRemainingSeconds[idx] - (int) elapsedSeconds;
         return Math.max(0, remaining);
-    }
-
-    public void resetTime() { 
-        this.startTimeMillis = System.currentTimeMillis(); 
     }
 
     // Getters

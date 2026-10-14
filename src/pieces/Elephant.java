@@ -20,7 +20,7 @@ public class Elephant extends Piece {
         }
 
         String color = this.playerPiece.getColor();
-        boolean isRed = color.equalsIgnoreCase("Red") || color.equalsIgnoreCase("Vermelho");
+        boolean isRed = color.equalsIgnoreCase("Red");
 
         // Não pode cruzar o rio (X = Linha: Red em 5..9, Black em 0..4)
         if (isRed && x < 5) {

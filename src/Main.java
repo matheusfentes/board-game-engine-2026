@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 import controller.GameManagement;
-import table.*;
+import table.RuleSet;
+import table.Board;
+import table.Player;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,16 +30,21 @@ public class Main {
             gameBoard.printBoard();
             
             // escolha da peca
-            System.out.println("\nEscolha a COLUNA (Y) da peça de origem: ");
+            System.out.println("\nEscolha a COLUNA (eixo Y) da peça de origem: ");
             int originY = scanner.nextInt();
-            System.out.println("Escolha a LINHA (X) da peça de origem: ");
+            System.out.println("Escolha a LINHA (eixo X) da peça de origem: ");
             int originX = scanner.nextInt();
 
             // escolha do local destino da peca
-            System.out.println("Escolha a COLUNA (Y) de destino: ");
+            System.out.println("Escolha a COLUNA (eixo Y) de destino: ");
             int destinationY = scanner.nextInt();
-            System.out.println("Escolha a LINHA (X) de destino: ");
+            System.out.println("Escolha a LINHA (eixo X) de destino: ");
             int destinationX = scanner.nextInt();
+
+            if(gameManager.getTime()<=0){
+                // pula pro fim da partida antes de executar o movimento
+                continue;
+            }
 
             // verificacao de execucao de movimento
             gameManager.executeMove(originX, originY, destinationX, destinationY);
@@ -46,5 +53,3 @@ public class Main {
         scanner.close();
     }
 }
-
-//@matheushuang: mexi no tempo
