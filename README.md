@@ -25,18 +25,18 @@ javac -encoding UTF-8 -sourcepath src -d out src/Main.java && java -Dfile.encodi
 ```
 ### Images of game:
 Start page
-![start](docs\image.png)
+![start](docs/image.png)
 ----
 Initial Board
-![board](docs\image-1.png)
+![board](docs/image-1.png)
 ----
 a captured piece
-![side](docs\side.png)
-![captured](docs\captured.png)
+![side](docs/side.png)
+![captured](docs/captured.png)
 ----
 a check
-![check](docs\check.png)
+![check](docs/check.png)
 ----
 a checkmate
 ![checkmate
-](docs\checkmate.png)
+](docs/checkmate.png)

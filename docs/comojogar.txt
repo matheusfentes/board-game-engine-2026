@@ -1,0 +1,42 @@
+XIANGQI
+=======================
+
+OBJETIVO
+Dar xeque-mate no General adversario ou deixa-lo sem jogadas legais.
+
+TABULEIRO E TURNOS
+- O tabuleiro tem 10 linhas (X: 0-9) e 9 colunas (Y: 0-8).
+- Vermelho fica embaixo e joga primeiro; Preto fica em cima.
+- Cada turno, informe quatro numeros nesta ordem: coluna Y de origem,
+	linha X de origem, coluna Y de destino e linha X de destino.
+- Exemplo: mover o peao vermelho de (X=6, Y=0) para (X=5, Y=0):
+	digite 0, depois 6, depois 0 e depois 5, confirmando cada valor.
+- So e permitido mover uma peca da sua cor. Capturar uma peca adversaria
+	ocupa a casa dela; nao e permitido capturar o General diretamente.
+
+PECAS, SIMBOLOS E MOVIMENTOS
+Os dois lados usam os mesmos simbolos; a cor distingue Vermelho de Preto.
+- 帥 General: 1 casa na horizontal ou vertical, sempre dentro do palacio.
+- 仕 Guarda: 1 casa na diagonal, sempre dentro do palacio.
+- 相 Elefante: 2 casas na diagonal; nao atravessa o rio e nao pode pular
+	uma peca que esteja no meio do caminho.
+- 傌 Cavalo: movimento em L; nao pode pular se a casa junto a ele estiver ocupada.
+- 俥 Torre: qualquer distancia em linha reta, sem pecas no caminho.
+- 炮 Canhao: move em linha reta sem pular pecas. Para capturar, precisa pular
+	exatamente uma peca entre ele e o alvo.
+- 兵 Peao: avanca 1 casa; depois de atravessar o rio, tambem pode andar 1 casa
+	para os lados. Nao pode andar para tras.
+
+REGRAS IMPORTANTES
+- O palacio ocupa as colunas Y=3 a 5. O palacio vermelho fica nas linhas X=7 a 9;
+	o preto, em X=0 a 2.
+- O rio fica entre as linhas X=4 e X=5.
+- Os dois Generais nao podem ficar frente a frente na mesma coluna sem nenhuma
+	peca entre eles.
+- Uma jogada que deixe seu General em xeque e invalida. Se a jogada for invalida,
+	tente novamente no mesmo turno.
+
+FIM DA PARTIDA
+- Vitoria: xeque-mate ou adversario sem jogadas legais.
+- Derrota por tempo: cada jogador tem 15 minutos no total.
+- Empate automatico: restarem apenas Generais, Guardas e Elefantes no tabuleiro.
