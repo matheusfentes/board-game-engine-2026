@@ -31,12 +31,15 @@ Initial Board
 ![board](docs/image-1.png)
 ----
 a captured piece
+
 ![side](docs/side.png)
 ![captured](docs/captured.png)
 ----
 a check
+
 ![check](docs/check.png)
 ----
 a checkmate
+
 ![checkmate
 ](docs/checkmate.png)
