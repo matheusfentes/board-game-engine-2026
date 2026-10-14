@@ -43,5 +43,14 @@ a check
 ----
 a checkmate
 
-![checkmate
-](docs/checkmate.png)
+![checkmate](docs/checkmate.png)
+
+----
+Para jogar: (portugues)
+1. Insira o nome dos dois jogadores
+2. O jogador vermelho começa a partida
+3. O jogador insere a posicao da peca que quer jogar
+4. O jogador insere a posicao desejada (se não souber como a peça se move tem um mini tutorial em /docs de como jogar)
+5. Muda de turno e o jogador das peças preta jogará, alternando turno a turno, com um tempo limitado de jogo
+6. Ganha quem fizer xeque-mate ou fazer o outro pensar demais e perder por tempo
+7. O jogo pode ficar empatado se só houver peças defensivas em campo
