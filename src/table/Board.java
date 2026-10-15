@@ -3,7 +3,9 @@ import pieces.*;
 
 public class Board {
     // Matriz do tabuleiro: 10 linhas (X) por 9 colunas (Y)
-    private Piece[][] board = new Piece[10][9];
+    private int boardSizeLine;
+    private int boardSizeCol;
+    private Piece[][] board;
     private Player player1;
     private Player player2;
     private RuleSet restriction;
@@ -16,6 +18,9 @@ public class Board {
      * @param restriction   Define as regras do jogo
      */
     public Board(Player player1, Player player2, RuleSet restriction) {
+        this.boardSizeLine = 10;
+        this.boardSizeCol = 9;
+        this.board = new Piece[this.boardSizeLine][this.boardSizeCol];
         this.player1 = player1;
         this.player2 = player2;
         this.restriction = restriction;
@@ -25,10 +30,10 @@ public class Board {
     // Posiciona as pecas dos dois lados pra começar a partida
     private void initializeBoard() {
         // Lado de cima (Black) - Linhas X = 0, 2, 3
-        setSide(player2, 0, 2, 3);
+        setSide(this.player2, 0, 2, 3);
 
         // Lado de baixo (Red) - Linhas X = 9, 7, 6
-        setSide(player1, 9, 7, 6);
+        setSide(this.player1, 9, 7, 6);
     }
 
   // Instancia as pecas de um dos lados do tabuleiro
@@ -58,14 +63,14 @@ public class Board {
         this.board[cannonLine][7] = new Cannon(cannonSymbol, this.restriction, player, cannonLine, 7);
 
         // Peoes (pawnLine = linha X, colunas Y de 0 a 8 pulando de 2 em 2)
-        for (int y = 0; y < 9; y += 2) {
+        for (int y = 0; y < this.boardSizeCol; y += 2) {
             this.board[pawnLine][y] = new Pawn(pawnSymbol, this.restriction, player, pawnLine, y);
         }
     }
 
     // Retorna se esta dentro ou fora dos limites do tabuleiro: X = Linha (0 a 9), Y = Coluna (0 a 8)
     public boolean isInsideBoard(int x, int y) {
-        return x >= 0 && x < 10 && y >= 0 && y < 9;
+        return x >= 0 && x < this.boardSizeLine && y >= 0 && y < this.boardSizeCol;
     }
 
     // Funcao que faz verificacoes de acordo com o tabuleiro para mover a peca
@@ -150,16 +155,16 @@ public class Board {
 
     // Verifica o tabuleiro duas vezes, verifica para se existe peca ali, e verifica para se existe um destino legal pra peca
     public boolean hasAnyLegalMove(String playerColor) {
-        for (int originX = 0; originX < 10; originX++) {
-            for (int originY = 0; originY < 9; originY++) {
+        for (int originX = 0; originX < this.boardSizeLine; originX++) {
+            for (int originY = 0; originY < this.boardSizeCol; originY++) {
                 Piece piece = this.board[originX][originY];
                 if (piece == null || !piece.getPlayer().getColor().equalsIgnoreCase(playerColor)) {
                     // Pula se nao tiver a peca naquela posicao do tabuleiro ou for uma peca diferente
                     continue;
                 }
 
-                for (int destinationX = 0; destinationX < 10; destinationX++) {
-                    for (int destinationY = 0; destinationY < 9; destinationY++) {
+                for (int destinationX = 0; destinationX < this.boardSizeLine; destinationX++) {
+                    for (int destinationY = 0; destinationY < this.boardSizeCol; destinationY++) {
                         if (isLegalMove(originX, originY, destinationX, destinationY)) {
                             return true;
                         }
@@ -172,10 +177,10 @@ public class Board {
 
     // O tabuleiro no terminal: cabeçalho mostra Colunas (Y), lateral mostra Linhas (X)
     public void printBoard() {
-        System.out.println("\n    0  1  2  3  4  5  6  7  8 (Y)"); // imprime eixo Y (colunas)
-        for (int x = 0; x < 10; x++) {
+        System.out.println("\n    a  b  c  d  e  f  g  h  i (Y)"); // imprime eixo Y (colunas)
+        for (int x = 0; x < this.boardSizeLine; x++) {
             System.out.print(x + "   "); // imprime eixo X (linhas)
-            for (int y = 0; y < 9; y++) {
+            for (int y = 0; y < this.boardSizeCol; y++) {
                 Piece p = this.board[x][y];
                 if (p == null) {
                     System.out.print(".  ");
@@ -192,8 +197,8 @@ public class Board {
     }
 
     public boolean hasOnlyDefensivePiecesRemaining() {
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 9; y++) {
+        for (int x = 0; x < this.boardSizeLine; x++) {
+            for (int y = 0; y < this.boardSizeCol; y++) {
                 Piece piece = this.board[x][y];
                 if (piece != null
                         && !(piece instanceof General)
@@ -216,4 +221,6 @@ public class Board {
     public Player getPlayer1(){ return this.player1; }
     public Player getPlayer2(){ return this.player2; }
     public RuleSet getRuleSet(){ return this.restriction; }
+    public int getBoardSizeLine(){ return this.boardSizeLine; }
+    public int getBoardSizeCol(){ return this.boardSizeCol; }
 }

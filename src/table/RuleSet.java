@@ -69,7 +69,7 @@ public class RuleSet {
         int redGeneralX = -1, redGeneralY = -1;
         int blackGeneralX = -1, blackGeneralY = -1;
 
-        for (int x = 0; x < 10; x++) {
+        for (int x = 0; x < board.getBoardSizeLine(); x++) {
             for (int y = 3; y <= 5; y++) {
                 Piece piece = board.getPiece(x, y);
                 if (piece != null && piece.getClass().getSimpleName().equalsIgnoreCase("General")) {
@@ -97,7 +97,7 @@ public class RuleSet {
         int generalY = -1;
 
         // Localiza a posição do General do jogador no tabuleiro
-        for (int x = 0; x < 10; x++) {
+        for (int x = 0; x < board.getBoardSizeLine(); x++) {
             for (int y = 3; y <= 5; y++) {
                 Piece piece = board.getPiece(x, y);
                 if (piece != null && piece.getClass().getSimpleName().equalsIgnoreCase("General")) {
@@ -117,8 +117,8 @@ public class RuleSet {
         }
 
         // Itera sobre todas as peças do adversário e testa se alguma consegue mover até ao General
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 9; y++) {
+        for (int x = 0; x < board.getBoardSizeLine(); x++) {
+            for (int y = 0; y < board.getBoardSizeCol(); y++) {
                 Piece enemyPiece = board.getPiece(x, y);
                 if (enemyPiece != null && !enemyPiece.getPlayer().getColor().equalsIgnoreCase(playerColor)) {
                     int origX = enemyPiece.getCoordinateX();

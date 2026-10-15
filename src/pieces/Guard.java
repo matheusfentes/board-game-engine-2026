@@ -19,7 +19,7 @@ public class Guard extends Piece {
             return false;
         }
 
-        // Coluna Y restrita ao Palácio (3 a 5)
+        // Coluna Y restrita ao Palácio ('d' a 'f')
         if (y < 3 || y > 5) {
             return false;
         }

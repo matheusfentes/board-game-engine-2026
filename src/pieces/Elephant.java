@@ -22,7 +22,7 @@ public class Elephant extends Piece {
         String color = this.playerPiece.getColor();
         boolean isRed = color.equalsIgnoreCase("Red");
 
-        // Não pode cruzar o rio (X = Linha: Red em 5..9, Black em 0..4)
+        // Não pode cruzar o rio (X = Linha)
         if (isRed && x < 5) {
             return false;
         }
@@ -30,7 +30,7 @@ public class Elephant extends Piece {
             return false;
         }
 
-        // Ponto central ("olho do elefante") bloqueado
+        // Ponto central bloqueado "olho do elefante"
         int eyeX = (this.coordinateX + x) / 2;
         int eyeY = (this.coordinateY + y) / 2;
         if (gameBoard.getPiece(eyeX, eyeY) != null) {

@@ -33,7 +33,7 @@ public class Cannon extends Piece {
 
         Piece destPiece = gameBoard.getPiece(x, y);
 
-        // Movimento sem captura: 0 obstáculos e casa vazia
+        // Não come se não houver uma peça para "pular carnica" e não há peça de destino
         if (destPiece == null) {
             if (obstacles == 0) {
                 return super.moveTo(x, y, gameBoard);
@@ -41,7 +41,7 @@ public class Cannon extends Piece {
             return false;
         }
 
-        // Captura: exatamente 1 plataforma/obstáculo e peça de cor oposta
+        // exatamente 2 peças no caminho: 1 que independe de lado e 1 peça de cor oposta "pula carniça"
         if (destPiece.getPlayer().getColor().equalsIgnoreCase(this.playerPiece.getColor())) {
             return false;
         }

@@ -36,7 +36,7 @@ public class GameManagement {
     // Inicializa a partida recolhendo os nomes dos jogadores
     public static Board initializeGame(Scanner sc, RuleSet restriction) {
         System.out.println("Bem-vindo ao Xiangqi!");
-        System.out.println("Os jogadores devem buscar aplicar um Xeque-Mate no General adversário (帥 para Vermelho / 將 para Preto), de modo a deixá-lo encurralado.");
+        System.out.println("Os jogadores devem buscar aplicar um Xeque-Mate no General adversário (帥), deixando-o encurralado ou eliminando-o.");
         System.out.println("O jogo pode acabar quando seu tempo de jogada terminar, então pense o mais rápido possível na sua jogada!\n");
 
         System.out.println("Digite o nome do jogador 1: ");
@@ -50,7 +50,7 @@ public class GameManagement {
 
         gameBoard.printBoard();
 
-        System.out.println("\nO jogador " + name1 + " inicia, visto que recebeu a cor vermelha, popularmente associada a boa sorte na cultura chinesa!\n");
+        System.out.println("\nO jogador " + name1 + " inicia, pois recebeu a cor vermelha, associada a boa sorte!\n");
 
         return gameBoard;
     }
@@ -118,7 +118,7 @@ public class GameManagement {
 
         // Valida se a casa de origem contém uma peça
         if (piece == null) {
-            System.out.println("\n[!] Nenhuma peça encontrada na posição selecionada (" + originX + ", " + originY + "). Tente novamente.");
+            System.out.println("\n[!] Nenhuma peça encontrada na posição selecionada (" + (char) ('a' + originY) + originX + "). Tente novamente.");
             return false;
         }
 
@@ -135,7 +135,7 @@ public class GameManagement {
             this.switchTurn();
             return true;
         } else {
-            System.out.println("\n[!] Movimento inválido para a peça " + piece.getSymbol() + " de (" + originX + ", " + originY + ") para (" + destX + ", " + destY + "). Verifique as regras de movimentação!");
+            System.out.println("\n[!] Movimento inválido para a peça " + piece.getSymbol() + " de (" + (char) ('a' + originY) + originX + ") para (" + (char) ('a' + destY) + destX + "). Verifique as regras de movimentação!");
             return false;
         }
     }

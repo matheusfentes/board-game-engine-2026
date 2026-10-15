@@ -30,25 +30,43 @@ public class Main {
             gameBoard.printBoard();
             
             // escolha da peca
-            System.out.println("\nEscolha a COLUNA (eixo Y) da peça de origem: ");
-            int originY = scanner.nextInt();
-            System.out.println("Escolha a LINHA (eixo X) da peça de origem: ");
-            int originX = scanner.nextInt();
+            System.out.println("Escolha a peca de origem (ex.: a2):"); 
+            String origin = scanner.nextLine();
+
+            while (origin.trim().length() != 2 
+                    || !Character.isLetter(origin.trim().charAt(0)) 
+                    || !Character.isDigit(origin.trim().charAt(1))) {
+                System.out.println("\n[!] Entrada invalida para a origem! Formato esperado: uma letra e um numero (ex.: a2).");
+                System.out.println("Escolha a peca de origem (ex.: a2):");
+                origin = scanner.nextLine();
+            }
 
             // escolha do local destino da peca
-            System.out.println("Escolha a COLUNA (eixo Y) de destino: ");
-            int destinationY = scanner.nextInt();
-            System.out.println("Escolha a LINHA (eixo X) de destino: ");
-            int destinationX = scanner.nextInt();
+            System.out.println("Escolha a peca de destino (ex.: a3):");
+            String destination = scanner.nextLine();
 
-            if(gameManager.getTime()<=0){
-                // pula pro fim da partida antes de executar o movimento
-                continue;
+            while (destination.trim().length() != 2 
+                    || !Character.isLetter(destination.trim().charAt(0)) 
+                    || !Character.isDigit(destination.trim().charAt(1))) {
+                System.out.println("\n[!] Entrada invalida para o destino! Formato esperado: uma letra e um numero (ex.: a3).");
+                System.out.println("Escolha a peca de destino (ex.: a3):");
+                destination = scanner.nextLine();
             }
+
+            // trata os char para ficarem minusculos
+            origin = origin.trim().toLowerCase();
+            destination = destination.trim().toLowerCase();
+
+            int originY = origin.charAt(0) - 'a';
+            int originX = Character.getNumericValue(origin.charAt(1));
+
+            int destinationY = destination.charAt(0) - 'a';
+            int destinationX = Character.getNumericValue(destination.charAt(1));
 
             // verificacao de execucao de movimento
             gameManager.executeMove(originX, originY, destinationX, destinationY);
         }
+
         // fechamento do scanner
         scanner.close();
     }

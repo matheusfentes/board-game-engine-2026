@@ -20,7 +20,7 @@ public class Horse extends Piece {
             return false;
         }
 
-        // Ponto de bloqueio ("pata do cavalo")
+        // Ponto de bloqueio ("joelho do cavalo")
         int blockX = this.coordinateX;
         int blockY = this.coordinateY;
 

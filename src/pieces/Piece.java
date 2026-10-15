@@ -50,18 +50,14 @@ public class Piece {
     }
 
     // Getters
-    public int getCoordinateX() { 
-        return this.coordinateX; 
-    }
+    public int getCoordinateX() { return this.coordinateX; }
 
-    public int getCoordinateY() { 
-        return this.coordinateY; 
-    }
+    public int getCoordinateY() { return this.coordinateY; }
 
-    public Player getPlayer() { 
-        return this.playerPiece; 
-    }
+    public Player getPlayer() { return this.playerPiece; }
 
+    public RuleSet getRestriction() { return this.restriction; }
+    
     public String getSymbol() { 
         if (this.playerPiece != null && 
            (this.playerPiece.getColor().equalsIgnoreCase("Red"))) {
@@ -71,7 +67,4 @@ public class Piece {
         }
     }
 
-    public RuleSet getRestriction() { 
-        return this.restriction; 
-    }
 }

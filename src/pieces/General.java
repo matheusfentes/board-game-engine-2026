@@ -20,7 +20,7 @@ public class General extends Piece {
             return false;
         }
 
-        // Validação do Palácio: Y = Coluna (3 a 5), X = Linha
+        // Validação do Palácio: Y = Coluna ('d' a 'f'), X = Linha (Red: 7 a 9, Black: 0 a 2)
         if (y < 3 || y > 5) {
             return false;
         }
