@@ -16,20 +16,8 @@ public class Cannon extends Piece {
             return false;
         }
 
-        int stepX = Integer.compare(x, this.coordinateX);
-        int stepY = Integer.compare(y, this.coordinateY);
-
-        int curX = this.coordinateX + stepX;
-        int curY = this.coordinateY + stepY;
-        int obstacles = 0;
-
-        while (curX != x || curY != y) {
-            if (gameBoard.getPiece(curX, curY) != null) {
-                obstacles++;
-            }
-            curX += stepX;
-            curY += stepY;
-        }
+        int obstacles = RuleSet.countObstacles(
+            this.coordinateX, this.coordinateY, x, y, gameBoard);
 
         Piece destPiece = gameBoard.getPiece(x, y);
 

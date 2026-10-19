@@ -17,18 +17,9 @@ public class Tower extends Piece {
         }
 
         // Obstáculos pelo caminho
-        int stepX = Integer.compare(x, this.coordinateX);
-        int stepY = Integer.compare(y, this.coordinateY);
-
-        int curX = this.coordinateX + stepX;
-        int curY = this.coordinateY + stepY;
-
-        while (curX != x || curY != y) {
-            if (gameBoard.getPiece(curX, curY) != null) {
-                return false;
-            }
-            curX += stepX;
-            curY += stepY;
+        if (RuleSet.countObstacles(
+                this.coordinateX, this.coordinateY, x, y, gameBoard) != 0) {
+            return false;
         }
 
         Piece destPiece = gameBoard.getPiece(x, y);

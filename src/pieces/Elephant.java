@@ -20,13 +20,9 @@ public class Elephant extends Piece {
         }
 
         String color = this.playerPiece.getColor();
-        boolean isRed = color.equalsIgnoreCase("Red");
 
-        // Não pode cruzar o rio (X = Linha)
-        if (isRed && x < 5) {
-            return false;
-        }
-        if (!isRed && x > 4) {
+        // O elefante não pode cruzar o rio.
+        if (RuleSet.hasCrossedRiver(x, color)) {
             return false;
         }
 
