@@ -16,25 +16,6 @@ public class RuleSet {
         this.isCheck = isCheck;
     }
 
-    
-
-    //Verifica se a coordenada pertence ao Palacio (zona "morta" do rei) do jogador.
-    public static boolean isInPalace(int x, int y, String playerColor) {
-        if (y < 3 || y > 5) {
-            return false;
-        }
-        if (playerColor.equalsIgnoreCase("Black")) {
-            return x >= 0 && x <= 2;
-        } else {
-            return x >= 7 && x <= 9;
-        }
-    }
-
-    //Verifica se a coordenada ta na regiao do Rio (linha 4 e 5).
-    public static boolean isInRiver(int x) {
-        return x == 4 || x == 5;
-    }
-
     //Verifica se o peao ja atravessou o Rio pra deixar movimento lateral.
     public static boolean hasCrossedRiver(int x, String playerColor) {
         if (playerColor.equalsIgnoreCase("Red")) {

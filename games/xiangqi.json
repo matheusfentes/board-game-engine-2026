@@ -1,0 +1,28 @@
+{
+  "game": "Xiangqi",
+
+  "board": {
+    "rows": 10,
+    "columns": 9
+  },
+
+  "players": {
+    "count": 2,
+    "symbols": ["Player 1", "Player 2"]
+  },
+
+  "rules": {
+    "placement": "EMPTY_POSITION",
+
+    "winCondition": {
+      "type": "CHECK_MATE",
+      "type_2": "ILLEGAL_MOVEMENTS",
+      "type_3": "Time",
+      "quantity": 900
+    },
+
+    "drawCondition": {
+        "type": "CAPTURE_OFENSIVE_PIECES"
+    }
+  }
+}

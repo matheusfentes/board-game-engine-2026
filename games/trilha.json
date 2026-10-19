@@ -1,0 +1,28 @@
+{
+  "game": "Trilha",
+
+  "board": {
+    "rows": 4,
+    "columns": 4
+  },
+
+  "players": {
+    "count": 2,
+    "symbols": ["Player 1", "Player 2"]
+  },
+
+  "rules": {
+    "placement": "EMPTY_POSITION",
+
+    "winCondition": {
+      "type": "PIECES_REMAIN",
+      "quantity": "2"
+    },
+
+    "drawCondition": {
+        "type": "PIECES_REMAIN_AND_TURN",
+        "quantity_of_pieces": 3,
+        "quantity_of_turns": 10
+    }
+  }
+}
