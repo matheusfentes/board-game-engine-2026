@@ -18,7 +18,7 @@
       "type": "CHECK_MATE",
       "type_2": "ILLEGAL_MOVEMENTS",
       "type_3": "Time",
-      "quantity": 900
+      "quantity": "900"
     },
 
     "drawCondition": {

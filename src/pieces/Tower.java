@@ -17,8 +17,7 @@ public class Tower extends Piece {
         }
 
         // Obstáculos pelo caminho
-        if (RuleSet.countObstacles(
-                this.coordinateX, this.coordinateY, x, y, gameBoard) != 0) {
+        if (RuleSet.countObstacles(this.coordinateX, this.coordinateY, x, y, gameBoard) != 0) {
             return false;
         }
 

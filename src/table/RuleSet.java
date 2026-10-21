@@ -2,20 +2,6 @@ package table;
 import pieces.Piece;
 
 public class RuleSet {
-    private boolean isCheck;
-    
-    public RuleSet() {
-        this.isCheck = false;
-    }
-
-    /**
-     * Construtor que define o xeque.
-     * @param isCheck Define se algum General esta em xeque.
-     */
-    public RuleSet(boolean isCheck) {
-        this.isCheck = isCheck;
-    }
-
     //Verifica se o peao ja atravessou o Rio pra deixar movimento lateral.
     public static boolean hasCrossedRiver(int x, String playerColor) {
         if (playerColor.equalsIgnoreCase("Red")) {
@@ -126,13 +112,5 @@ public class RuleSet {
     // Metodo que verifica se houve o xeque-mate
     public static boolean isCheckmate(String playerColor, Board board) {
         return isPlayerInCheck(playerColor, board) && !hasAnyLegalMove(playerColor, board);
-    }
-
-    // getter e setter do check (nao sei como isso vai continuar)
-    public boolean getIsCheck() {
-        return this.isCheck;
-    }
-    public void setCheck(boolean isCheck) {
-        this.isCheck = isCheck;
     }
 }

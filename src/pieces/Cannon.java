@@ -16,8 +16,7 @@ public class Cannon extends Piece {
             return false;
         }
 
-        int obstacles = RuleSet.countObstacles(
-            this.coordinateX, this.coordinateY, x, y, gameBoard);
+        int obstacles = RuleSet.countObstacles(this.coordinateX, this.coordinateY, x, y, gameBoard);
 
         Piece destPiece = gameBoard.getPiece(x, y);
 

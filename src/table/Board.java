@@ -75,31 +75,12 @@ public class Board {
 
     // Funcao que faz verificacoes de acordo com o tabuleiro para mover a peca
     public boolean movePiece(int originX, int originY, int destinationX, int destinationY) {
-        if (!isInsideBoard(originX, originY) || !isInsideBoard(destinationX, destinationY)) {
-            System.out.println("Fora dos limites do tabuleiro...");
-            return false;
-        }
-
-        if (originX == destinationX && originY == destinationY) {
-            System.out.println("Voce escolheu a mesma casa!");
-            return false;
-        }
-
-        Piece piece = this.board[originX][originY];
-        if (piece == null) {
-            return false;
-        }
-
-        Piece destinationPiece = this.board[destinationX][destinationY];
-        if (destinationPiece != null && destinationPiece.getPlayer().getColor().equalsIgnoreCase(piece.getPlayer().getColor())) {
-            System.out.println("Nao pode comer a propria peca!");
-            return false;
-        }
-
         if (!isLegalMove(originX, originY, destinationX, destinationY)) {
             return false;
         }
 
+        Piece piece = this.board[originX][originY];
+        Piece destinationPiece = this.board[destinationX][destinationY];
         this.board[destinationX][destinationY] = piece;
         this.board[originX][originY] = null;
         piece.setCoordinates(destinationX, destinationY);

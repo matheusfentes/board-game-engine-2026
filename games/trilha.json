@@ -21,8 +21,8 @@
 
     "drawCondition": {
         "type": "PIECES_REMAIN_AND_TURN",
-        "quantity_of_pieces": 3,
-        "quantity_of_turns": 10
+        "quantity_of_pieces": "3",
+        "quantity_of_turns": "10"
     }
   }
 }
