@@ -1,5 +1,5 @@
-package table;
-import pieces.*;
+package xiangqi.table;
+import xiangqi.pieces.*;
 
 public class Board {
     // Matriz do tabuleiro: 10 linhas (X) por 9 colunas (Y)

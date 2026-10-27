@@ -1,7 +1,7 @@
-package pieces;
-import table.Board;
-import table.Player;
-import table.RuleSet;
+package xiangqi.pieces;
+import xiangqi.table.Board;
+import xiangqi.table.Player;
+import xiangqi.table.RuleSet;
 
 public class Guard extends Piece {
 

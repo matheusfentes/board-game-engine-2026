@@ -2,27 +2,50 @@
   "game": "Trilha",
 
   "board": {
-    "rows": 4,
-    "columns": 4
+    "type": "NINE_MENS_MORRIS",
+    "rows": 7,
+    "columns": 7,
+    "positions": 24
+  },
+
+  "position": {
+    "type": "BOARD_NODE"
   },
 
   "players": {
     "count": 2,
-    "symbols": ["Player 1", "Player 2"]
+    "symbols": ["X", "O"]
+  },
+
+  "pieces": [
+    { "name": "Piece", "quantity": 9, "perPlayer": true }
+  ],
+
+  "turn": {
+    "firstPlayer": "X",
+    "order": "ALTERNATING"
   },
 
   "rules": {
     "placement": "EMPTY_POSITION",
-
+    "movementRule": ["ADJACENT", "FLY_WITH_3_PIECES"],
+    "captureRule": ["AFTER_MILL", "PROTECTED_UNLESS_ALL_OPPONENT_PIECES_IN_MILLS"],
     "winCondition": {
-      "type": "PIECES_REMAIN",
-      "quantity": "2"
+      "type": "OPPONENT_HAS_LESS_THAN",
+      "quantity": 3
     },
-
+    "additionalWinCondition": {
+      "type": "OPPONENT_HAS_NO_LEGAL_MOVE"
+    },
     "drawCondition": {
-        "type": "PIECES_REMAIN_AND_TURN",
-        "quantity_of_pieces": "3",
-        "quantity_of_turns": "10"
+      "type": "NO_CAPTURE_FOR_TURNS_WITH_3_PIECES",
+      "turns": 10
     }
+  },
+
+  "gameState": {
+    "initial": "PLACEMENT",
+    "phases": ["PLACEMENT", "MOVEMENT", "CAPTURE_PENDING"],
+    "terminal": ["WIN", "DRAW"]
   }
 }

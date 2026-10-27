@@ -1,10 +1,11 @@
-package controller;
+package xiangqi.controller;
 
 import java.util.Scanner;
-import pieces.Piece;
-import table.RuleSet;
-import table.Board;
-import table.Player;
+
+import xiangqi.pieces.Piece;
+import xiangqi.table.Board;
+import xiangqi.table.Player;
+import xiangqi.table.RuleSet;
 
 public class GameManagement {
     private long startTimeMillis;
@@ -81,7 +82,7 @@ public class GameManagement {
         }
 
         // Verifica se existe movimentos legais de pecas (ex. general em xeque, voce deve salva-lo)
-        if (!RuleSet.hasAnyLegalMove(this.currentTurn.getColor(), this.gameBoard)) {
+        if (!this.gameBoard.hasAnyLegalMove(this.currentTurn.getColor())) {
             boolean checkmate = RuleSet.isCheckmate(this.currentTurn.getColor(), this.gameBoard);
             if (checkmate) {
                 System.out.println("\n[Fim de Jogo] Xeque-mate!");

@@ -1,8 +1,8 @@
-package pieces;
+package xiangqi.pieces;
 
-import table.Board;
-import table.Player;
-import table.RuleSet;
+import xiangqi.table.Board;
+import xiangqi.table.Player;
+import xiangqi.table.RuleSet;
 
 public class Piece {
     protected String pieceName;

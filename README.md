@@ -1,5 +1,7 @@
 # board-game-engine-2026
 Reutilizable engine in JAVA designed to run several different board games, from a JSON config file. It does not modify the engine's source code.
+
+Obs: The class diagram is in the `docs` folder with a basic tutorial to play Xiangqi and a presentation.
 ## First Checkpoint: Xiangqi
 ### How compile the project:
 Run these PowerShell commands from the project root directory to compile:

@@ -6,23 +6,47 @@
     "columns": 9
   },
 
+  "position": {
+    "type": "ROW_COLUMN",
+    "indexBase": 0
+  },
+
   "players": {
     "count": 2,
-    "symbols": ["Player 1", "Player 2"]
+    "symbols": ["Red", "Black"]
+  },
+
+  "pieces": [
+    { "name": "General", "symbol": "帥", "quantity": 1, "movementRule": "ORTHOGONAL_1_IN_PALACE" },
+    { "name": "Guard", "symbol": "仕", "quantity": 2, "movementRule": "DIAGONAL_1_IN_PALACE" },
+    { "name": "Elephant", "symbol": "相", "quantity": 2, "movementRule": "DIAGONAL_2_ON_HOME_SIDE" },
+    { "name": "Horse", "symbol": "傌", "quantity": 2, "movementRule": "L_SHAPE" },
+    { "name": "Tower", "symbol": "俥", "quantity": 2, "movementRule": "ORTHOGONAL" },
+    { "name": "Cannon", "symbol": "炮", "quantity": 2, "movementRule": "ORTHOGONAL" },
+    { "name": "Pawn", "symbol": "兵", "quantity": 5, "movementRule": "FORWARD_1_SIDEWAYS_AFTER_RIVER" }
+  ],
+
+  "turn": {
+    "firstPlayer": "Red",
+    "order": "ALTERNATING",
+    "timeLimitSeconds": 900
   },
 
   "rules": {
-    "placement": "EMPTY_POSITION",
-
+    "placement": "FIXED",
+    "movementRule": ["PATH_MUST_BE_CLEAR", "GENERAL_MUST_STAY_SAFE"],
+    "captureRule": ["OPPONENT_ONLY", "CANNON_REQUIRES_ONE_SCREEN"],
     "winCondition": {
-      "type": "CHECK_MATE",
-      "type_2": "ILLEGAL_MOVEMENTS",
-      "type_3": "Time",
-      "quantity": "900"
+      "type": "CHECKMATE_OR_NO_LEGAL_MOVE"
     },
-
     "drawCondition": {
-        "type": "CAPTURE_OFENSIVE_PIECES"
+      "type": "ONLY_DEFENSIVE_PIECES_REMAIN"
     }
+  },
+
+  "gameState": {
+    "initial": "READY",
+    "playing": "IN_PROGRESS",
+    "terminal": ["WIN", "DRAW", "TIMEOUT"]
   }
 }

@@ -1,4 +1,4 @@
-package table;
+package xiangqi.table;
 
 public class Player {
     private String playerName;

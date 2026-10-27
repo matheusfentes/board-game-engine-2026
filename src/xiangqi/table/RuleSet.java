@@ -1,5 +1,5 @@
-package table;
-import pieces.Piece;
+package xiangqi.table;
+import xiangqi.pieces.Piece;
 
 public class RuleSet {
     //Verifica se o peao ja atravessou o Rio pra deixar movimento lateral.
@@ -104,13 +104,8 @@ public class RuleSet {
         return false;
     }
 
-    // Recebe o metodo de verificacao de movimentos do board
-    public static boolean hasAnyLegalMove(String playerColor, Board board) {
-        return board.hasAnyLegalMove(playerColor);
-    }
-
     // Metodo que verifica se houve o xeque-mate
     public static boolean isCheckmate(String playerColor, Board board) {
-        return isPlayerInCheck(playerColor, board) && !hasAnyLegalMove(playerColor, board);
+        return isPlayerInCheck(playerColor, board) && !board.hasAnyLegalMove(playerColor);
     }
 }
