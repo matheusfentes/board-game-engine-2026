@@ -21,8 +21,8 @@ public class Cannon extends Piece {
         Piece destPiece = gameBoard.getPiece(x, y);
 
         // Não come se não houver uma peça para "pular carnica" e não há peça de destino
-        if (destPiece == null) {
-            if (obstacles == 0) {
+        if (!this.restriction.usesCaptureRule("CANNON_REQUIRES_ONE_SCREEN")) {
+            if (!this.restriction.usesMovementRule("PATH_MUST_BE_CLEAR") || obstacles == 0) {
                 return super.moveTo(x, y, gameBoard);
             }
             return false;
@@ -33,7 +33,13 @@ public class Cannon extends Piece {
             return false;
         }
 
-        if (obstacles == 1) {
+        if (destPiece == null) {
+            if (!this.restriction.usesMovementRule("PATH_MUST_BE_CLEAR") || obstacles == 0) {
+                return super.moveTo(x, y, gameBoard);
+            }
+            return false;
+        }
+        if (destPiece != null && obstacles == 1) {
             return super.moveTo(x, y, gameBoard);
         }
 

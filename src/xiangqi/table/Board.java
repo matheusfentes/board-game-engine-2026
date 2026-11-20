@@ -1,5 +1,6 @@
 package xiangqi.table;
 import xiangqi.pieces.*;
+import config.GameConfig;
 
 public class Board {
     // Matriz do tabuleiro: 10 linhas (X) por 9 colunas (Y)
@@ -9,6 +10,7 @@ public class Board {
     private Player player1;
     private Player player2;
     private RuleSet restriction;
+    private GameConfig config;
 
     /**
      * Construtor para criar uma instancia pra classe board
@@ -17,57 +19,39 @@ public class Board {
      * @param player2       Define o jogador 2 do jogo
      * @param restriction   Define as regras do jogo
      */
-    public Board(Player player1, Player player2, RuleSet restriction) {
-        this.boardSizeLine = 10;
-        this.boardSizeCol = 9;
+    public Board(Player player1, Player player2, RuleSet restriction, GameConfig config) {
+        this.config = config;
+        this.boardSizeLine = config.board.rows;
+        this.boardSizeCol = config.board.columns;
         this.board = new Piece[this.boardSizeLine][this.boardSizeCol];
         this.player1 = player1;
         this.player2 = player2;
         this.restriction = restriction;
         initializeBoard();
     }
-    
-    // Posiciona as pecas dos dois lados pra começar a partida
+
     private void initializeBoard() {
-        // Lado de cima (Black) - Linhas X = 0, 2, 3
-        setSide(this.player2, 0, 2, 3);
-
-        // Lado de baixo (Red) - Linhas X = 9, 7, 6
-        setSide(this.player1, 9, 7, 6);
-    }
-
-  // Instancia as pecas de um dos lados do tabuleiro
-    private void setSide(Player player, int mainLine, int cannonLine, int pawnLine) {
-        // Simbologia simplificada e unificada (padrão Vermelho) para ambos os lados
-        String towerSymbol    = "俥";
-        String horseSymbol    = "傌";
-        String elephantSymbol = "相";
-        String guardSymbol    = "仕";
-        String generalSymbol  = "帥";
-        String cannonSymbol   = "炮";
-        String pawnSymbol     = "兵";
-
-        // Linha principal do fundo (mainLine = linha X)
-        this.board[mainLine][0] = new Tower(towerSymbol, this.restriction, player, mainLine, 0);
-        this.board[mainLine][1] = new Horse(horseSymbol, this.restriction, player, mainLine, 1);
-        this.board[mainLine][2] = new Elephant(elephantSymbol, this.restriction, player, mainLine, 2);
-        this.board[mainLine][3] = new Guard(guardSymbol, this.restriction, player, mainLine, 3);
-        this.board[mainLine][4] = new General(generalSymbol, this.restriction, player, mainLine, 4);
-        this.board[mainLine][5] = new Guard(guardSymbol, this.restriction, player, mainLine, 5);
-        this.board[mainLine][6] = new Elephant(elephantSymbol, this.restriction, player, mainLine, 6);
-        this.board[mainLine][7] = new Horse(horseSymbol, this.restriction, player, mainLine, 7);
-        this.board[mainLine][8] = new Tower(towerSymbol, this.restriction, player, mainLine, 8);
-
-        // Canhoes (cannonLine = linha X)
-        this.board[cannonLine][1] = new Cannon(cannonSymbol, this.restriction, player, cannonLine, 1);
-        this.board[cannonLine][7] = new Cannon(cannonSymbol, this.restriction, player, cannonLine, 7);
-
-        // Peoes (pawnLine = linha X, colunas Y de 0 a 8 pulando de 2 em 2)
-        for (int y = 0; y < this.boardSizeCol; y += 2) {
-            this.board[pawnLine][y] = new Pawn(pawnSymbol, this.restriction, player, pawnLine, y);
+        for (GameConfig.PlacementConfig placement : config.initialPosition) {
+            Player owner = placement.player.equalsIgnoreCase(player1.getColor()) ? player1 : player2;
+            GameConfig.PieceConfig type = config.pieces.stream()
+                .filter(p -> p.name.equalsIgnoreCase(placement.piece)).findFirst().orElseThrow();
+            Piece piece = createPiece(type, owner, placement.row, placement.column);
+            board[placement.row][placement.column] = piece;
         }
     }
 
+    private Piece createPiece(GameConfig.PieceConfig p, Player owner, int row, int column) {
+        return switch (p.name.toLowerCase(java.util.Locale.ROOT)) {
+            case "tower" -> new Tower(p.symbol, restriction, owner, row, column);
+            case "horse" -> new Horse(p.symbol, restriction, owner, row, column);
+            case "elephant" -> new Elephant(p.symbol, restriction, owner, row, column);
+            case "guard" -> new Guard(p.symbol, restriction, owner, row, column);
+            case "general" -> new General(p.symbol, restriction, owner, row, column);
+            case "cannon" -> new Cannon(p.symbol, restriction, owner, row, column);
+            case "pawn" -> new Pawn(p.symbol, restriction, owner, row, column);
+            default -> throw new IllegalArgumentException("Peça Xiangqi não suportada: " + p.name);
+        };
+    }
     // Retorna se esta dentro ou fora dos limites do tabuleiro: X = Linha (0 a 9), Y = Coluna (0 a 8)
     public boolean isInsideBoard(int x, int y) {
         return x >= 0 && x < this.boardSizeLine && y >= 0 && y < this.boardSizeCol;
@@ -93,7 +77,7 @@ public class Board {
     public boolean isLegalMove(int originX, int originY, int destinationX, int destinationY) {
         if (!isInsideBoard(originX, originY) || !isInsideBoard(destinationX, destinationY)
                 || (originX == destinationX && originY == destinationY)) {
-            // Verificações de tabuleiro
+            // VerificaÃ§Ãµes de tabuleiro
             return false;
         }
         Piece piece = this.board[originX][originY];
@@ -103,7 +87,7 @@ public class Board {
             return false;
         }
 
-        if (destinationPiece != null
+        if (restriction.usesCaptureRule("OPPONENT_ONLY") && destinationPiece != null
                 && destinationPiece.getPlayer().getColor().equalsIgnoreCase(piece.getPlayer().getColor())) {
             // verifica se ta capturando uma peca da mesma cor
             return false;
@@ -119,8 +103,9 @@ public class Board {
         // tabuleiro temporario pra ver se o general foi ameacado
         this.board[destinationX][destinationY] = piece;
         this.board[originX][originY] = null;
-        boolean inCheck = RuleSet.isPlayerInCheck(piece.getPlayer().getColor(), this);
-        boolean generalsFacing = RuleSet.areGeneralsFacingEachOther(this);
+        boolean enforceGeneralSafety = restriction.usesMovementRule("GENERAL_MUST_STAY_SAFE");
+        boolean inCheck = enforceGeneralSafety && RuleSet.isPlayerInCheck(piece.getPlayer().getColor(), this);
+        boolean generalsFacing = enforceGeneralSafety && RuleSet.areGeneralsFacingEachOther(this);
 
         // restauracao do tabuleiro para a setagem de cordenadas
         this.board[originX][originY] = piece;
@@ -156,7 +141,7 @@ public class Board {
         return false;
     }
 
-    // O tabuleiro no terminal: cabeçalho mostra Colunas (Y), lateral mostra Linhas (X)
+    // O tabuleiro no terminal: cabeÃ§alho mostra Colunas (Y), lateral mostra Linhas (X)
     public void printBoard() {
         System.out.println("\n    a  b  c  d  e  f  g  h  i (Y)"); // imprime eixo Y (colunas)
         for (int x = 0; x < this.boardSizeLine; x++) {

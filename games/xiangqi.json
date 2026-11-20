@@ -1,41 +1,79 @@
 {
   "game": "Xiangqi",
-
   "board": {
     "rows": 10,
     "columns": 9
   },
-
   "position": {
     "type": "ROW_COLUMN",
     "indexBase": 0
   },
-
   "players": {
     "count": 2,
-    "symbols": ["Red", "Black"]
+    "symbols": [
+      "Red",
+      "Black"
+    ]
   },
-
   "pieces": [
-    { "name": "General", "symbol": "帥", "quantity": 1, "movementRule": "ORTHOGONAL_1_IN_PALACE" },
-    { "name": "Guard", "symbol": "仕", "quantity": 2, "movementRule": "DIAGONAL_1_IN_PALACE" },
-    { "name": "Elephant", "symbol": "相", "quantity": 2, "movementRule": "DIAGONAL_2_ON_HOME_SIDE" },
-    { "name": "Horse", "symbol": "傌", "quantity": 2, "movementRule": "L_SHAPE" },
-    { "name": "Tower", "symbol": "俥", "quantity": 2, "movementRule": "ORTHOGONAL" },
-    { "name": "Cannon", "symbol": "炮", "quantity": 2, "movementRule": "ORTHOGONAL" },
-    { "name": "Pawn", "symbol": "兵", "quantity": 5, "movementRule": "FORWARD_1_SIDEWAYS_AFTER_RIVER" }
+    {
+      "name": "General",
+      "symbol": "帥",
+      "quantity": 1,
+      "movementRule": "ORTHOGONAL_1_IN_PALACE"
+    },
+    {
+      "name": "Guard",
+      "symbol": "仕",
+      "quantity": 2,
+      "movementRule": "DIAGONAL_1_IN_PALACE"
+    },
+    {
+      "name": "Elephant",
+      "symbol": "相",
+      "quantity": 2,
+      "movementRule": "DIAGONAL_2_ON_HOME_SIDE"
+    },
+    {
+      "name": "Horse",
+      "symbol": "傌",
+      "quantity": 2,
+      "movementRule": "L_SHAPE"
+    },
+    {
+      "name": "Tower",
+      "symbol": "俥",
+      "quantity": 2,
+      "movementRule": "ORTHOGONAL"
+    },
+    {
+      "name": "Cannon",
+      "symbol": "炮",
+      "quantity": 2,
+      "movementRule": "ORTHOGONAL"
+    },
+    {
+      "name": "Pawn",
+      "symbol": "兵",
+      "quantity": 5,
+      "movementRule": "FORWARD_1_SIDEWAYS_AFTER_RIVER"
+    }
   ],
-
   "turn": {
     "firstPlayer": "Red",
     "order": "ALTERNATING",
     "timeLimitSeconds": 900
   },
-
   "rules": {
     "placement": "FIXED",
-    "movementRule": ["PATH_MUST_BE_CLEAR", "GENERAL_MUST_STAY_SAFE"],
-    "captureRule": ["OPPONENT_ONLY", "CANNON_REQUIRES_ONE_SCREEN"],
+    "movementRule": [
+      "PATH_MUST_BE_CLEAR",
+      "GENERAL_MUST_STAY_SAFE"
+    ],
+    "captureRule": [
+      "OPPONENT_ONLY",
+      "CANNON_REQUIRES_ONE_SCREEN"
+    ],
     "winCondition": {
       "type": "CHECKMATE_OR_NO_LEGAL_MOVE"
     },
@@ -43,10 +81,198 @@
       "type": "ONLY_DEFENSIVE_PIECES_REMAIN"
     }
   },
-
-  "gameState": {
-    "initial": "READY",
-    "playing": "IN_PROGRESS",
-    "terminal": ["WIN", "DRAW", "TIMEOUT"]
-  }
+  "initialPosition": [
+    {
+      "player": "Black",
+      "piece": "Tower",
+      "row": 0,
+      "column": 0
+    },
+    {
+      "player": "Black",
+      "piece": "Horse",
+      "row": 0,
+      "column": 1
+    },
+    {
+      "player": "Black",
+      "piece": "Elephant",
+      "row": 0,
+      "column": 2
+    },
+    {
+      "player": "Black",
+      "piece": "Guard",
+      "row": 0,
+      "column": 3
+    },
+    {
+      "player": "Black",
+      "piece": "General",
+      "row": 0,
+      "column": 4
+    },
+    {
+      "player": "Black",
+      "piece": "Guard",
+      "row": 0,
+      "column": 5
+    },
+    {
+      "player": "Black",
+      "piece": "Elephant",
+      "row": 0,
+      "column": 6
+    },
+    {
+      "player": "Black",
+      "piece": "Horse",
+      "row": 0,
+      "column": 7
+    },
+    {
+      "player": "Black",
+      "piece": "Tower",
+      "row": 0,
+      "column": 8
+    },
+    {
+      "player": "Black",
+      "piece": "Cannon",
+      "row": 2,
+      "column": 1
+    },
+    {
+      "player": "Black",
+      "piece": "Cannon",
+      "row": 2,
+      "column": 7
+    },
+    {
+      "player": "Black",
+      "piece": "Pawn",
+      "row": 3,
+      "column": 0
+    },
+    {
+      "player": "Black",
+      "piece": "Pawn",
+      "row": 3,
+      "column": 2
+    },
+    {
+      "player": "Black",
+      "piece": "Pawn",
+      "row": 3,
+      "column": 4
+    },
+    {
+      "player": "Black",
+      "piece": "Pawn",
+      "row": 3,
+      "column": 6
+    },
+    {
+      "player": "Black",
+      "piece": "Pawn",
+      "row": 3,
+      "column": 8
+    },
+    {
+      "player": "Red",
+      "piece": "Tower",
+      "row": 9,
+      "column": 0
+    },
+    {
+      "player": "Red",
+      "piece": "Horse",
+      "row": 9,
+      "column": 1
+    },
+    {
+      "player": "Red",
+      "piece": "Elephant",
+      "row": 9,
+      "column": 2
+    },
+    {
+      "player": "Red",
+      "piece": "Guard",
+      "row": 9,
+      "column": 3
+    },
+    {
+      "player": "Red",
+      "piece": "General",
+      "row": 9,
+      "column": 4
+    },
+    {
+      "player": "Red",
+      "piece": "Guard",
+      "row": 9,
+      "column": 5
+    },
+    {
+      "player": "Red",
+      "piece": "Elephant",
+      "row": 9,
+      "column": 6
+    },
+    {
+      "player": "Red",
+      "piece": "Horse",
+      "row": 9,
+      "column": 7
+    },
+    {
+      "player": "Red",
+      "piece": "Tower",
+      "row": 9,
+      "column": 8
+    },
+    {
+      "player": "Red",
+      "piece": "Cannon",
+      "row": 7,
+      "column": 1
+    },
+    {
+      "player": "Red",
+      "piece": "Cannon",
+      "row": 7,
+      "column": 7
+    },
+    {
+      "player": "Red",
+      "piece": "Pawn",
+      "row": 6,
+      "column": 0
+    },
+    {
+      "player": "Red",
+      "piece": "Pawn",
+      "row": 6,
+      "column": 2
+    },
+    {
+      "player": "Red",
+      "piece": "Pawn",
+      "row": 6,
+      "column": 4
+    },
+    {
+      "player": "Red",
+      "piece": "Pawn",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "player": "Red",
+      "piece": "Pawn",
+      "row": 6,
+      "column": 8
+    }
+  ]
 }

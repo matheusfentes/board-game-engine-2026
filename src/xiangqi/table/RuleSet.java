@@ -1,7 +1,20 @@
 package xiangqi.table;
 import xiangqi.pieces.Piece;
+import config.GameConfig;
 
 public class RuleSet {
+    private final GameConfig config;
+
+    public RuleSet(GameConfig config) { this.config = config; }
+
+    public boolean usesMovementRule(String rule) {
+        return config.rules.movementRule.contains(rule);
+    }
+
+    public boolean usesCaptureRule(String rule) {
+        return config.rules.captureRule.contains(rule);
+    }
+
     //Verifica se o peao ja atravessou o Rio pra deixar movimento lateral.
     public static boolean hasCrossedRiver(int x, String playerColor) {
         if (playerColor.equalsIgnoreCase("Red")) {

@@ -5,18 +5,21 @@ import xiangqi.controller.GameManagement;
 import xiangqi.table.Board;
 import xiangqi.table.Player;
 import xiangqi.table.RuleSet;
+import config.GameConfig;
 
 public class XiangqiGame implements Game {
+    private final GameConfig config;
+    public XiangqiGame(GameConfig config) { this.config = config; }
     @Override
     public void start(Scanner scanner) {
         // Inicialização e loop do Xiangqi
 
         // Instanciacao das regras e do tabuleiro do programa, usando o metodo estatico do gamemanagement pra inicializar o programa
-        RuleSet gameRule = new RuleSet();
-        Board gameBoard = GameManagement.initializeGame(scanner, gameRule);
+        RuleSet gameRule = new RuleSet(config);
+        Board gameBoard = GameManagement.initializeGame(scanner, gameRule, config);
         
         // Instanciacao do gerenciador do programa
-        GameManagement gameManager = new GameManagement(gameBoard, new Player[]{gameBoard.getPlayer1(), gameBoard.getPlayer2()});
+        GameManagement gameManager = new GameManagement(gameBoard, new Player[]{gameBoard.getPlayer1(), gameBoard.getPlayer2()}, config);
 
         // loop de jogadas
         while (!gameManager.isGameOver()) {

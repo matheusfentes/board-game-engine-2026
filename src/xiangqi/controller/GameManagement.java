@@ -6,6 +6,7 @@ import xiangqi.pieces.Piece;
 import xiangqi.table.Board;
 import xiangqi.table.Player;
 import xiangqi.table.RuleSet;
+import config.GameConfig;
 
 public class GameManagement {
     private long startTimeMillis;
@@ -13,21 +14,24 @@ public class GameManagement {
     private Board gameBoard;
     private Player[] gamePlayers;
     private int[] playerRemainingSeconds;
+    private GameConfig config;
 
     /**
      * Cria a instancia de GameManagement que une os jogadores e o tabuleiro
      * @param board     Tabuleiro da partida
      * @param players   Array com os jogadores participantes
      */
-    public GameManagement(Board board, Player[] players) {
+    public GameManagement(Board board, Player[] players, GameConfig config) {
         this.startTimeMillis = System.currentTimeMillis();
         this.gameBoard = board;
         this.gamePlayers = players;
-        this.playerRemainingSeconds = new int[]{900, 900};
+        this.config = config;
+        this.playerRemainingSeconds = new int[players.length];
+        java.util.Arrays.fill(this.playerRemainingSeconds, config.turn.timeLimitSeconds);
 
         // "Red" (Vermelho) sempre começa no Xiangqi
         for (Player player : this.gamePlayers) {
-            if (player.getColor().equalsIgnoreCase("Red")) {
+            if (player.getColor().equalsIgnoreCase(config.turn.firstPlayer)) {
                 this.currentTurn = player;
                 break;
             }
@@ -35,7 +39,7 @@ public class GameManagement {
     }
 
     // Inicializa a partida recolhendo os nomes dos jogadores
-    public static Board initializeGame(Scanner sc, RuleSet restriction) {
+    public static Board initializeGame(Scanner sc, RuleSet restriction, GameConfig config) {
         System.out.println("Bem-vindo ao Xiangqi!");
         System.out.println("Os jogadores devem buscar aplicar um Xeque-Mate no General adversário (帥), deixando-o encurralado ou eliminando-o.");
         System.out.println("O jogo pode acabar quando seu tempo de jogada terminar, então pense o mais rápido possível na sua jogada!\n");
@@ -45,9 +49,9 @@ public class GameManagement {
         System.out.println("Digite o nome do jogador 2: ");
         String name2 = sc.nextLine();
 
-        Player player1 = new Player(name1, 1, "Red");
-        Player player2 = new Player(name2, 2, "Black");
-        Board gameBoard = new Board(player1, player2, restriction);
+        Player player1 = new Player(name1, 1, config.players.symbols.get(0));
+        Player player2 = new Player(name2, 2, config.players.symbols.get(1));
+        Board gameBoard = new Board(player1, player2, restriction, config);
 
         gameBoard.printBoard();
 
@@ -76,13 +80,15 @@ public class GameManagement {
         }
 
         // Verifica se existem apenas pecas defensivas no jogo
-        if (this.gameBoard.hasOnlyDefensivePiecesRemaining()) {
-            System.out.println("\n[Fim de Jogo] Empate: restam apenas pecas defensivas, isuficientes pra um xeque-mate!");
+        if ("ONLY_DEFENSIVE_PIECES_REMAIN".equals(config.rules.drawCondition.type)
+                && this.gameBoard.hasOnlyDefensivePiecesRemaining()) {
+            System.out.println("\n[Fim de Jogo] Empate: restam apenas pecas defensivas, insuficientes pra um xeque-mate!");
             return true;
         }
 
         // Verifica se existe movimentos legais de pecas (ex. general em xeque, voce deve salva-lo)
-        if (!this.gameBoard.hasAnyLegalMove(this.currentTurn.getColor())) {
+        if ("CHECKMATE_OR_NO_LEGAL_MOVE".equals(config.rules.winCondition.type)
+                && !this.gameBoard.hasAnyLegalMove(this.currentTurn.getColor())) {
             boolean checkmate = RuleSet.isCheckmate(this.currentTurn.getColor(), this.gameBoard);
             if (checkmate) {
                 System.out.println("\n[Fim de Jogo] Xeque-mate!");

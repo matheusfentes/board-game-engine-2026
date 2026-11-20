@@ -1,30 +1,19 @@
 import java.util.Scanner;
-
-import base.Game;
-import base.TrilhaGame;
-import base.XiangqiGame;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import config.GameConfig;
+import config.GameLoader;
+import engine.Engine;
 
 public class Main {
-    public static void main(String[] args) {
-        // Scanner pra receber a entrada
+    public static void main(String[] args) throws Exception {
+        // Make board symbols render consistently when the terminal uses UTF-8.
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
         Scanner scanner = new Scanner(System.in);
-
-        // Print na tela do menu pra os jogadores escolherem entre as opções dos jogos
-        String menu = "Selecione o jogo:\n" + "\n" + "1 - Xiangqi\n" + "2 - Trilha";
-        System.out.println(menu);
-
-        // entrada da escolha do jogador (Xiangqi - 1, Trilha - 2)
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // buffer
-
-        // switch case pra criação de novas instancias das classes dos jogos baseadas na interface Game
-        Game game = switch (choice) {
-            case 1 -> new XiangqiGame();
-            case 2 -> new TrilhaGame();
-            default -> throw new IllegalArgumentException("Jogo inválido");
-        };
-
-        game.start(scanner);
-
+        String path = args.length > 0 ? args[0] : "games/xiangqi.json";
+        GameConfig config = new GameLoader().load(path);
+        new Engine(config).run(scanner);
     }
 }

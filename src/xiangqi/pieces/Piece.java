@@ -14,7 +14,7 @@ public class Piece {
     // Cores ANSI para o terminal
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[1;31m";       // Vermelho vivo
-    public static final String ANSI_BEIGE = "\u001B[38;5;229m";  // Tom bege suave
+    public static final String ANSI_BLACK_SIDE = "\u001B[97m";  // Branco para contraste no terminal
 
     /**
      * Cria uma nova instancia pra definir o estado inicial da peca
@@ -59,12 +59,11 @@ public class Piece {
     public RuleSet getRestriction() { return this.restriction; }
     
     public String getSymbol() { 
-        if (this.playerPiece != null && 
-           (this.playerPiece.getColor().equalsIgnoreCase("Red"))) {
-            return ANSI_RED + this.pieceName + ANSI_RESET;
-        } else {
-            return ANSI_BEIGE + this.pieceName + ANSI_RESET;
-        }
+        if (this.playerPiece == null) return this.pieceName;
+        String color = this.playerPiece.getColor();
+        if ("Red".equalsIgnoreCase(color)) return ANSI_RED + this.pieceName + ANSI_RESET;
+        if ("Black".equalsIgnoreCase(color)) return ANSI_BLACK_SIDE + this.pieceName + ANSI_RESET;
+        return this.pieceName;
     }
 
 }

@@ -2,10 +2,8 @@
   "game": "Trilha",
 
   "board": {
-    "type": "NINE_MENS_MORRIS",
     "rows": 7,
-    "columns": 7,
-    "positions": 24
+    "columns": 7
   },
 
   "position": {
@@ -41,11 +39,5 @@
       "type": "NO_CAPTURE_FOR_TURNS_WITH_3_PIECES",
       "turns": 10
     }
-  },
-
-  "gameState": {
-    "initial": "PLACEMENT",
-    "phases": ["PLACEMENT", "MOVEMENT", "CAPTURE_PENDING"],
-    "terminal": ["WIN", "DRAW"]
   }
 }
