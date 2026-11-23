@@ -1,0 +1,57 @@
+TRILHA
+==============================
+
+OBJETIVO
+Formar uma trilha, isto e, alinhar tres pecas em uma linha do tabuleiro, para
+capturar pecas do adversario. Vence quem deixar o adversario com menos de tres
+pecas ou sem nenhum movimento legal.
+
+PARTICIPANTES E CORES
+- Sao dois jogadores: X e O.
+- O jogador X comeca; os turnos alternam.
+- No terminal, X aparece em vermelho e O em branco.
+
+TABULEIRO E COORDENADAS
+O tabuleiro tem 24 pontos validos. As linhas sao identificadas por letras de a
+a g e as colunas por numeros de 1 a 7. Digite a letra seguida do numero, por
+exemplo, a1 ou d5.
+
+Pontos validos por linha:
+  a: a1, a4, a7
+  b: b2, b4, b6
+  c: c3, c4, c5
+  d: d1, d2, d3, d5, d6, d7
+  e: e3, e4, e5
+  f: f2, f4, f6
+  g: g1, g4, g7
+
+Pontos conectados por uma linha podem ser vizinhos. As pecas so podem se mover
+pelas ligacoes do tabuleiro; nao podem saltar outras pecas durante o movimento
+normal.
+
+FASE 1: COLOCACAO
+1. Cada jogador tem nove pecas.
+2. Em seu turno, escolha um ponto vazio para colocar uma peca.
+3. Os jogadores alternam ate colocarem todas as pecas.
+4. Se formar uma trilha de tres pecas, escolha uma peca adversaria para remover.
+
+FASE 2: MOVIMENTO
+1. Escolha uma peca sua e depois um ponto vazio conectado a ela.
+2. Quando um jogador tiver exatamente tres pecas no tabuleiro, pode "voar":
+mover uma peca sua para qualquer ponto vazio, conectado ou nao.
+3. Formar uma trilha de tres pecas permite remover uma peca do adversario.
+
+CAPTURAS E PECAS PROTEGIDAS
+- Uma captura so acontece depois que o jogador forma uma trilha.
+- Em geral, nao se pode remover uma peca que esteja em uma trilha adversaria.
+- Se todas as pecas do adversario estiverem em trilhas, pode-se remover qualquer uma delas.
+
+FIM DA PARTIDA
+- Vitoria: o adversario fica com menos de tres pecas depois da fase de colocacao.
+- Vitoria: o adversario nao tem movimento legal no inicio de seu turno.
+- Empate: ambos ficam com tres pecas e passam dez turnos consecutivos sem captura.
+
+COMO INICIAR
+Na raiz do projeto, carregue a configuracao da Trilha:
+
+  java -cp "out;lib/gson-2.11.0.jar" Main games/trilha.json

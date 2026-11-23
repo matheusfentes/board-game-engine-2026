@@ -1,13 +1,14 @@
-package xiangqi.controller;
+package controller;
 
 import java.util.Scanner;
 
-import xiangqi.pieces.Piece;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+import pieces.Piece;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 import config.GameConfig;
 
+/** Coordena turnos, relógio, jogadas e condições de fim do Xiangqi. */
 public class GameManagement {
     private long startTimeMillis;
     private Player currentTurn;
@@ -17,9 +18,10 @@ public class GameManagement {
     private GameConfig config;
 
     /**
-     * Cria a instancia de GameManagement que une os jogadores e o tabuleiro
-     * @param board     Tabuleiro da partida
-     * @param players   Array com os jogadores participantes
+     * Cria o gerenciador de uma partida e configura relógio e primeiro turno.
+     * @param board tabuleiro da partida
+     * @param players participantes, na ordem usada pelo gerenciamento
+     * @param config configuração validada do jogo
      */
     public GameManagement(Board board, Player[] players, GameConfig config) {
         this.startTimeMillis = System.currentTimeMillis();
@@ -38,7 +40,7 @@ public class GameManagement {
         }
     }
 
-    // Inicializa a partida recolhendo os nomes dos jogadores
+    /** Solicita os nomes dos jogadores e monta o tabuleiro inicial de Xiangqi. */
     public static Board initializeGame(Scanner sc, RuleSet restriction, GameConfig config) {
         System.out.println("Bem-vindo ao Xiangqi!");
         System.out.println("Os jogadores devem buscar aplicar um Xeque-Mate no General adversário (帥), deixando-o encurralado ou eliminando-o.");
@@ -61,6 +63,7 @@ public class GameManagement {
     }
 
     // Metodo que recebe o index do jogador atual, usado nas funcoes de gerenciamento de tempo do jogo
+    /** Localiza o índice do jogador atual nos vetores de participantes e relógios. */
     private int getCurrentTurnIndex() {
         for (int i = 0; i < this.gamePlayers.length; i++) {
             if (this.gamePlayers[i].getPlayerCode() == this.currentTurn.getPlayerCode()) {
@@ -71,6 +74,7 @@ public class GameManagement {
     }
 
     // Verifica se o jogo acabou por tempo, xeque-mate ou falta de movimentos legais
+    /** Verifica tempo, empate por material e ausência de jogadas legais. */
     public boolean isGameOver() {
         // Se o tempo terminar, game over 
         if (this.getTime() <= 0) {
@@ -109,6 +113,7 @@ public class GameManagement {
     }
 
     // Executa a validação do turno e delega a jogada para o tabuleiro
+    /** Cobra o tempo do turno e tenta executar a jogada informada. */
     public boolean executeMove(int originX, int originY, int destX, int destY) {
         // Gerenciamento do tempo por index do jogador, retirando o tempo restante
         int idx = getCurrentTurnIndex();
@@ -148,6 +153,7 @@ public class GameManagement {
     }
 
     // Alterna a vez entre os jogadores
+    /** Alterna o turno para o outro participante. */
     public void switchTurn() {
         for (Player player : this.gamePlayers) {
             if (player.getPlayerCode() != this.currentTurn.getPlayerCode()) {
@@ -158,6 +164,7 @@ public class GameManagement {
     }
 
     // Gerenciamento do temporizador (limite fixo de 900 segundos por lance)
+    /** Retorna o tempo restante do jogador atual em segundos. */
     public int getTime() {
         int idx = getCurrentTurnIndex();
         long elapsedSeconds = (System.currentTimeMillis() - this.startTimeMillis) / 1000;
@@ -166,10 +173,12 @@ public class GameManagement {
     }
 
     // Getters
+    /** Retorna o jogador que deve fazer a próxima jogada. */
     public Player getTurn() { 
         return this.currentTurn; 
     }
 
+    /** Retorna o tabuleiro gerenciado pela partida. */
     public Board getGameBoard() { 
         return this.gameBoard; 
     }

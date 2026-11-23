@@ -1,33 +1,36 @@
-package xiangqi.pieces;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+package pieces;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 
-public class Guard extends Piece {
+/** General Xiangqi, limitado a passos ortogonais dentro do palácio. */
+public class General extends Piece {
 
-    public Guard(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY) {
+    /** Cria um general associado ao jogador e às regras da partida. */
+    public General(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY) {
         super(pieceName, rules, playerPiece, coordinateX, coordinateY);
     }
 
     @Override
+    /** Valida o passo ortogonal e os limites do palácio do jogador. */
     public boolean moveTo(int x, int y, Board gameBoard) {
         int diffX = Math.abs(x - this.coordinateX);
         int diffY = Math.abs(y - this.coordinateY);
 
-        // Diagonal de exatamente 1 casa
-        if (diffX != 1 || diffY != 1) {
+        // Movimento ortogonal de exatamente 1 casa
+        boolean oneStep = (diffX == 1 && diffY == 0) || (diffX == 0 && diffY == 1);
+        if (!oneStep) {
             return false;
         }
 
-        // Coluna Y restrita ao Palácio ('d' a 'f')
+        // Validação do Palácio: Y = Coluna ('d' a 'f'), X = Linha (Red: 7 a 9, Black: 0 a 2)
         if (y < 3 || y > 5) {
             return false;
         }
 
         String color = this.playerPiece.getColor();
-        boolean isRed = color.equalsIgnoreCase("Red");
+        boolean isRed = color.equalsIgnoreCase("Red") ;
 
-        // Linha X restrita ao Palácio
         if (isRed) {
             if (x < 7 || x > 9) return false;
         } else {

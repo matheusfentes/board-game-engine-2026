@@ -1,15 +1,19 @@
 package base;
 import java.util.Scanner;
 
-import xiangqi.controller.GameManagement;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+import controller.GameManagement;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 import config.GameConfig;
 
+/** Implementa o ciclo de partida do Xiangqi usando a configuração carregada. */
 public class XiangqiGame implements Game {
     private final GameConfig config;
+    /** Cria o jogo com uma configuração Xiangqi validada. */
     public XiangqiGame(GameConfig config) { this.config = config; }
+
+    /** Solicita os jogadores e executa turnos até o fim da partida. */
     @Override
     public void start(Scanner scanner) {
         // Inicialização e loop do Xiangqi

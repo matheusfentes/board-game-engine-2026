@@ -1,15 +1,18 @@
-package xiangqi.pieces;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+package pieces;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 
+/** Cavalo Xiangqi, que se move em L e pode ser bloqueado no primeiro passo. */
 public class Horse extends Piece {
 
+    /** Cria um cavalo associado ao jogador e às regras da partida. */
     public Horse(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY) {
         super(pieceName, rules, playerPiece, coordinateX, coordinateY);
     }
 
     @Override
+    /** Valida o movimento em L e a ocupação da casa que bloqueia o cavalo. */
     public boolean moveTo(int x, int y, Board gameBoard) {
         int diffX = Math.abs(x - this.coordinateX);
         int diffY = Math.abs(y - this.coordinateY);

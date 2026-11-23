@@ -1,15 +1,18 @@
-package xiangqi.pieces;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+package pieces;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 
+/** Elefante Xiangqi: move duas casas na diagonal sem atravessar o rio. */
 public class Elephant extends Piece {
 
+    /** Cria um elefante associado ao jogador e às regras da partida. */
     public Elephant(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY) {
         super(pieceName, rules, playerPiece, coordinateX, coordinateY);
     }
 
     @Override
+    /** Verifica diagonal, lado do rio e bloqueio do olho do elefante. */
     public boolean moveTo(int x, int y, Board gameBoard) {
         int diffX = Math.abs(x - this.coordinateX);
         int diffY = Math.abs(y - this.coordinateY);

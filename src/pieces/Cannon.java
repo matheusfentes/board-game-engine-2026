@@ -1,15 +1,18 @@
-package xiangqi.pieces;
-import xiangqi.table.Board;
-import xiangqi.table.Player;
-import xiangqi.table.RuleSet;
+package pieces;
+import table.Board;
+import table.Player;
+import table.RuleSet;
 
+/** Peça Xiangqi que se move em linha reta e salta uma tela para capturar. */
 public class Cannon extends Piece {
 
+    /** Cria um canhão associado ao jogador e às regras da partida. */
     public Cannon(String pieceName, RuleSet rules, Player playerPiece, int coordinateX, int coordinateY) {
         super(pieceName, rules, playerPiece, coordinateX, coordinateY);
     }
 
     @Override
+    /** Valida movimento ortogonal e a regra configurada de captura por tela. */
     public boolean moveTo(int x, int y, Board gameBoard) {
         // Linha reta ortogonal
         if (x != this.coordinateX && y != this.coordinateY) {
